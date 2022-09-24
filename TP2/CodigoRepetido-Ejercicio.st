@@ -48,17 +48,6 @@ assertTheCustomerBookHasOnlyJohnLennon: aCustomerBook
 	self assert: (aCustomerBook includesCustomerNamed: 'John Lennon')
 ! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'cg 9/24/2022 12:07:43'!
-assertThisCustomerBook: aCustomerBook HasATotalOf: aNumberOfCustomers andActive: aNumberOfActiveCustomers andSuspended: aNumberOfSuspendedCustomers
-
-    self assert: aNumberOfActiveCustomers equals: aCustomerBook numberOfActiveCustomers.
-    self assert: aNumberOfSuspendedCustomers equals: aCustomerBook numberOfSuspendedCustomers.
-    self assert: aNumberOfCustomers equals: aCustomerBook numberOfCustomers.
-	
-
-	
-! !
-
 !CustomerBookTest methodsFor: 'testing' stamp: 'cg 9/24/2022 12:38:27'!
 createACustomerBookWith: aCustomer
 	^CustomerBook new addCustomerNamed: aCustomer.! !
@@ -131,18 +120,18 @@ test04CanNotRemoveAnInvalidCustomer
 
 ! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'cg 9/24/2022 12:42:03'!
+!CustomerBookTest methodsFor: 'testing' stamp: 'cg 9/24/2022 14:30:15'!
 test05SuspendingACustomerShouldNotRemoveItFromCustomerBook
 
 	| customerBook paulMcCartney|
 	
-	
 	paulMcCartney := 'Paul McCartney'.
+	
 	customerBook:= self createACustomerBookWith:  paulMcCartney. 
 	customerBook suspendCustomerNamed: paulMcCartney.
 	
 	
-	self assertThisCustomerBook: customerBook HasATotalOf: 1 andActive: 0 andSuspended: 1.
+	self assert: (customerBook hasATotalOf: 1 active: 0 suspended: 1).
 	
 	self assertTheCustomerBook: customerBook HasACustomer: paulMcCartney.
 	
@@ -151,19 +140,19 @@ test05SuspendingACustomerShouldNotRemoveItFromCustomerBook
 	
 ! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'cg 9/24/2022 12:43:16'!
+!CustomerBookTest methodsFor: 'testing' stamp: 'cg 9/24/2022 14:30:48'!
 test06RemovingASuspendedCustomerShouldRemoveItFromCustomerBook
 
 	| customerBook paulMcCartney|
 	
 	paulMcCartney:= 'Paul McCartney'.
+	
 	customerBook := self createACustomerBookWith:  paulMcCartney. 
 
 	customerBook suspendCustomerNamed: paulMcCartney.
 	customerBook removeCustomerNamed: paulMcCartney.
 	
-	
-	self assertThisCustomerBook: customerBook HasATotalOf: 0 andActive: 0 andSuspended: 0.
+	self assert: (customerBook hasATotalOf: 0 active: 0 suspended: 0).
 	
 	self denyTheCustomerBook: customerBook HasACustomer: paulMcCartney.
 	
@@ -172,12 +161,13 @@ test06RemovingASuspendedCustomerShouldRemoveItFromCustomerBook
 	
 ! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'cg 9/24/2022 14:14:29'!
+!CustomerBookTest methodsFor: 'testing' stamp: 'cg 9/24/2022 14:16:42'!
 test07CanNotSuspendAnInvalidCustomer
 	
 	| customerBook johnLennon suspendInvalidCustomerBlock |
 			
 	johnLennon := 'John Lennon'.
+	
 	customerBook := self createACustomerBookWith:  johnLennon. 
 	suspendInvalidCustomerBlock := [customerBook suspendCustomerNamed: 'Ringo Starr'].
 	self failing: suspendInvalidCustomerBlock onTheError: CantSuspend do: [self assertTheCustomerBookHasOnlyJohnLennon: customerBook].
@@ -229,6 +219,14 @@ addCustomerNamed: aName
 	(self includesCustomerNamed: aName) ifTrue: [ self signalCustomerAlreadyExists ].
 	
 	active add: aName ! !
+
+!CustomerBook methodsFor: 'customer management' stamp: 'cg 9/24/2022 14:25:35'!
+hasATotalOf: aNumberOfCustomers active: aNumberOfActiveCustomers suspended: aNumberOfSuspendedCustomers
+
+   ^((aNumberOfActiveCustomers = self numberOfActiveCustomers) and:
+    (aNumberOfSuspendedCustomers = self numberOfSuspendedCustomers) and:
+    (aNumberOfCustomers = self numberOfCustomers))
+	! !
 
 !CustomerBook methodsFor: 'customer management' stamp: 'NR 4/3/2019 10:14:26'!
 numberOfActiveCustomers
