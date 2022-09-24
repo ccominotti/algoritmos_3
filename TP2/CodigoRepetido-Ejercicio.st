@@ -71,10 +71,10 @@ denyTheCustomerBook: aCustomerBook HasACustomer: aCustomer
 	
 ! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'cg 9/24/2022 13:30:48'!
+!CustomerBookTest methodsFor: 'testing' stamp: 'cg 9/24/2022 14:06:24'!
 failing:  aBlockThatFails onTheError: anErrorType do: assertionBlock
 
-	[ aBlockThatFails.
+	[ aBlockThatFails value.
 	self fail ]
 		on: anErrorType 
 		do: assertionBlock! !
@@ -105,27 +105,22 @@ test02RemovingCustomerShouldNotTakeMoreThan100Milliseconds
 	
 ! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'cg 9/24/2022 13:31:12'!
+!CustomerBookTest methodsFor: 'testing' stamp: 'cg 9/24/2022 13:54:32'!
 test03CanNotAddACustomerWithEmptyName 
 
-	| customerBook addEmptyNameBlock |
+	| customerBook addEmptyNameBlock assertionEmptyCustomerBlock |
 			
 	customerBook := CustomerBook new.
 	addEmptyNameBlock := [customerBook addCustomerNamed: ''.].
 	
-	self failing: addEmptyNameBlock onTheError: Error do: 'assertionBlock'.
-
-
-'
-	[ customerBook addCustomerNamed: ''.
-	self fail ]
-		on: Error 
-		do: [ :anError | 
+	assertionEmptyCustomerBlock :=[ :anError | 
 			self assert: anError messageText = CustomerBook customerCanNotBeEmptyErrorMessage.
-			self assert: customerBook isEmpty ]
-		'! !
+			self assert: customerBook isEmpty ].
+		
+	self failing: addEmptyNameBlock onTheError: Error do: assertionEmptyCustomerBlock.
+! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'cg 9/24/2022 13:31:07'!
+!CustomerBookTest methodsFor: 'testing' stamp: 'cg 9/24/2022 14:11:36'!
 test04CanNotRemoveAnInvalidCustomer
 	
 	| customerBook removeInvalidCustomerBlock |
@@ -134,12 +129,6 @@ test04CanNotRemoveAnInvalidCustomer
 	removeInvalidCustomerBlock := [customerBook removeCustomerNamed: 'Paul McCartney'].
 	self failing: removeInvalidCustomerBlock onTheError: NotFound do: [self assertTheCustomerBookHasOnlyJohnLennon: customerBook].
 
-"
-	[ customerBook removeCustomerNamed: 'Paul McCartney'.
-	self fail ]
-		on: NotFound 
-		do: [ self assertTheCustomerBookHasOnlyJohnLennon: customerBook] 
-		"
 ! !
 
 !CustomerBookTest methodsFor: 'testing' stamp: 'cg 9/24/2022 12:42:03'!
@@ -183,32 +172,27 @@ test06RemovingASuspendedCustomerShouldRemoveItFromCustomerBook
 	
 ! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'cg 9/24/2022 12:59:44'!
+!CustomerBookTest methodsFor: 'testing' stamp: 'cg 9/24/2022 14:14:29'!
 test07CanNotSuspendAnInvalidCustomer
 	
-	| customerBook johnLennon |
+	| customerBook johnLennon suspendInvalidCustomerBlock |
 			
 	johnLennon := 'John Lennon'.
 	customerBook := self createACustomerBookWith:  johnLennon. 
-	
-	[ customerBook suspendCustomerNamed: 'Ringo Starr'.
-	self fail ]
-		on: CantSuspend 
-		do: [ self assertTheCustomerBookHasOnlyJohnLennon: customerBook]
+	suspendInvalidCustomerBlock := [customerBook suspendCustomerNamed: 'Ringo Starr'].
+	self failing: suspendInvalidCustomerBlock onTheError: CantSuspend do: [self assertTheCustomerBookHasOnlyJohnLennon: customerBook].
 ! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'cg 9/24/2022 12:59:28'!
+!CustomerBookTest methodsFor: 'testing' stamp: 'cg 9/24/2022 14:15:20'!
 test08CanNotSuspendAnAlreadySuspendedCustomer
 	
-	| customerBook johnLennon |
+	| customerBook johnLennon suspendInvalidCustomerBlock|
 			
 	johnLennon := 'John Lennon'.
 	customerBook := self createACustomerBookWith:  johnLennon. 	customerBook suspendCustomerNamed: johnLennon.
+	 suspendInvalidCustomerBlock := [customerBook suspendCustomerNamed: johnLennon].
 	
-	[ customerBook suspendCustomerNamed: johnLennon.
-	self fail ]
-		on: CantSuspend 
-		do: [ 	self assertTheCustomerBookHasOnlyJohnLennon: customerBook]
+	self failing: suspendInvalidCustomerBlock onTheError: CantSuspend do: [self assertTheCustomerBookHasOnlyJohnLennon: customerBook].
 ! !
 
 
