@@ -21,25 +21,10 @@ TestCase subclass: #CustomerBookTest
 	poolDictionaries: ''
 	category: 'CodigoRepetido-Ejercicio'!
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'cg 9/24/2022 11:41:12'!
-assertDoing: aClosure shouldNotTakeMoreThan: aTime
-
-	| millisecondsBeforeRunning millisecondsAfterRunning |
-	
-	millisecondsBeforeRunning := Time millisecondClockValue * millisecond.
-	aClosure value.
-	millisecondsAfterRunning := Time millisecondClockValue * millisecond.
-	
-	self assert: (millisecondsAfterRunning-millisecondsBeforeRunning) < (aTime)
-	
-! !
-
-!CustomerBookTest methodsFor: 'testing' stamp: 'cg 9/24/2022 12:04:16'!
+!CustomerBookTest methodsFor: 'testing' stamp: 'gmor 9/25/2022 11:24:59'!
 assertTheCustomerBook: aCustomerBook HasACustomer: aCustomer
-	self assert: (aCustomerBook includesCustomerNamed: aCustomer).
-	
 
-	
+	self assert: (aCustomerBook includesCustomerNamed: aCustomer).
 ! !
 
 !CustomerBookTest methodsFor: 'testing' stamp: 'cg 9/24/2022 12:55:19'!
@@ -68,7 +53,7 @@ failing:  aBlockThatFails onTheError: anErrorType do: assertionBlock
 		on: anErrorType 
 		do: assertionBlock! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'cg 9/24/2022 11:46:57'!
+!CustomerBookTest methodsFor: 'testing' stamp: 'gmor 9/25/2022 11:29:23'!
 test01AddingCustomerShouldNotTakeMoreThan50Milliseconds
 
 	| customerBook anAction |
@@ -76,11 +61,11 @@ test01AddingCustomerShouldNotTakeMoreThan50Milliseconds
 	customerBook := CustomerBook new.
 	anAction := [customerBook addCustomerNamed: 'John Lennon'].
 	
-	self assertDoing: anAction shouldNotTakeMoreThan: 50 * millisecond.
+	self should: anAction notTakeMoreThan: 50 milliSeconds .
 	
 ! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'cg 9/24/2022 12:38:55'!
+!CustomerBookTest methodsFor: 'testing' stamp: 'gmor 9/25/2022 11:29:40'!
 test02RemovingCustomerShouldNotTakeMoreThan100Milliseconds
 
 	| customerBook anAction |
@@ -89,7 +74,7 @@ test02RemovingCustomerShouldNotTakeMoreThan100Milliseconds
 	
 	anAction := [customerBook removeCustomerNamed: 'Paul McCartney'].
 	
-	self assertDoing: anAction shouldNotTakeMoreThan: 100 * millisecond.
+	self should: anAction notTakeMoreThan: 100 milliSeconds.
 	
 	
 ! !
