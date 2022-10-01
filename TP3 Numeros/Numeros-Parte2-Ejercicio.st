@@ -371,9 +371,9 @@ Numero subclass: #Entero
 	poolDictionaries: ''
 	category: 'Numeros-Parte2-Ejercicio'!
 
-!Entero methodsFor: 'dd - arithmetic operations' stamp: 'cg 10/1/2022 16:36:30'!
+!Entero methodsFor: 'dd - arithmetic operations' stamp: 'cg 10/1/2022 18:41:38'!
 dividirAEntero: UnEntero
-	^Fraccion with: UnEntero over: self.
+	^ UnEntero / self.
 	! !
 
 !Entero methodsFor: 'dd - arithmetic operations' stamp: 'cg 10/1/2022 17:25:53'!
@@ -381,10 +381,14 @@ dividirAFraccion: UnaFraccion
 	^ UnaFraccion dividirsePorEntero: self.
 ! !
 
-!Entero methodsFor: 'dd - arithmetic operations' stamp: 'cg 9/30/2022 19:23:04'!
+!Entero methodsFor: 'dd - arithmetic operations' stamp: 'cg 10/1/2022 19:36:05'!
+generarFraccionIrreductible: UnNumerador
+	^Fraccion with: UnNumerador over: self.! !
+
+!Entero methodsFor: 'dd - arithmetic operations' stamp: 'cg 10/1/2022 18:39:59'!
 invertir
 	(self isZero) ifTrue: [^self class canNotDivideByZeroErrorDescription].
-	^Fraccion with: (Entero with: 1) over: self.! !
+	^(Entero with: 1) / self.! !
 
 !Entero methodsFor: 'dd - arithmetic operations' stamp: 'cg 9/30/2022 18:56:34'!
 multiplicarseConEntero: UnEntero
@@ -395,6 +399,10 @@ multiplicarseConEntero: UnEntero
 multiplicarseConFraccion: UnaFraccion
 	^UnaFraccion multiplicarseConEntero: self.
 ! !
+
+!Entero methodsFor: 'dd - arithmetic operations' stamp: 'cg 10/1/2022 19:23:30'!
+serDivididoPor: UnEntero
+	^ Fraccion gcdwith: self over: UnEntero.! !
 
 !Entero methodsFor: 'dd - arithmetic operations' stamp: 'cg 9/30/2022 17:55:47'!
 sumarConEntero: UnEntero
@@ -427,13 +435,9 @@ sumarConFraccion: UnaFraccion
 	^aDivisor dividirAEntero: self.
 ! !
 
-!Entero methodsFor: 'arithmetic operations' stamp: 'cg 10/1/2022 18:01:53'!
+!Entero methodsFor: 'arithmetic operations' stamp: 'cg 10/1/2022 18:21:24'!
 fibonacci
-	| one two |
-	one := Entero with: 1.
-	two := Entero with: 2.
-
-	^ (self - one) fibonacci + (self - two) fibonacci
+	self subclassResponsibility.
 		! !
 
 
@@ -506,14 +510,14 @@ contieneA: unNumero
 negativeFibonacciErrorDescription
 	^ ' Fibonacci no est� definido aqu� para Enteros Negativos'! !
 
-!Entero class methodsFor: 'instance creation' stamp: 'cg 10/1/2022 17:40:09'!
+!Entero class methodsFor: 'instance creation' stamp: 'cg 10/1/2022 18:23:24'!
 with: aValue 	|claseAInstanciar|
 	
 	"Esta verificacion esta puesta por si se equivocan y quieren crear un Entero pasando otra cosa que un Integer - Hernan"
 	aValue isInteger ifFalse: [  self error: 'aValue debe ser anInteger' ].
 	
 
-	claseAInstanciar := Entero subclasses detect: [:unaSubclase | unaSubclase contieneA: aValue] ifNone: [Entero].
+	claseAInstanciar := Entero subclasses detect: [:unaSubclase | unaSubclase contieneA: aValue].
 	
 	
 	^claseAInstanciar new initializeWith: aValue! !
@@ -525,6 +529,10 @@ Entero subclass: #EnteroNegativo
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Numeros-Parte2-Ejercicio'!
+
+!EnteroNegativo methodsFor: 'arithmetic operations' stamp: 'cg 10/1/2022 18:44:56'!
+dividirAEntero: UnEntero
+	^ UnEntero negated/self negated.! !
 
 !EnteroNegativo methodsFor: 'arithmetic operations' stamp: 'cg 10/1/2022 17:59:12'!
 fibonacci
@@ -542,6 +550,38 @@ contieneA: unNumero
 
 
 
+!classDefinition: #EnteroPositivo category: 'Numeros-Parte2-Ejercicio'!
+Entero subclass: #EnteroPositivo
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Numeros-Parte2-Ejercicio'!
+
+!EnteroPositivo methodsFor: 'dd - arithmetic operations' stamp: 'cg 10/1/2022 18:49:27'!
+dividirAEntero: UnEntero
+	^ UnEntero serDivididoPor: self.
+! !
+
+
+!EnteroPositivo methodsFor: 'arithmetic operations' stamp: 'cg 10/1/2022 18:21:32'!
+fibonacci
+	| one two |
+	one := Entero with: 1.
+	two := Entero with: 2.
+
+	^ (self - one) fibonacci + (self - two) fibonacci! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'EnteroPositivo class' category: 'Numeros-Parte2-Ejercicio'!
+EnteroPositivo class
+	instanceVariableNames: ''!
+
+!EnteroPositivo class methodsFor: 'uso interno - dd' stamp: 'cg 10/1/2022 18:22:04'!
+contieneA: unNumero
+	^unNumero > 1.! !
+
+
 !classDefinition: #One category: 'Numeros-Parte2-Ejercicio'!
 Entero subclass: #One
 	instanceVariableNames: ''
@@ -552,6 +592,16 @@ Entero subclass: #One
 !One methodsFor: 'arithmetic operations' stamp: 'cg 10/1/2022 18:01:04'!
 fibonacci
 	^Entero with: 1.! !
+
+
+!One methodsFor: 'dd - arithmetic operations' stamp: 'cg 10/1/2022 18:43:36'!
+dividirAEntero: UnEntero
+	^ UnEntero.
+	! !
+
+!One methodsFor: 'dd - arithmetic operations' stamp: 'cg 10/1/2022 19:36:05'!
+generarFraccionIrreductible: UnNumerador
+	^UnNumerador.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -570,6 +620,16 @@ Entero subclass: #Zero
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Numeros-Parte2-Ejercicio'!
+
+!Zero methodsFor: 'dd - arithmetic operations' stamp: 'cg 10/1/2022 18:44:21'!
+dividirAEntero: UnEntero
+	self error: Entero canNotDivideByZeroErrorDescription.
+	! !
+
+!Zero methodsFor: 'dd - arithmetic operations' stamp: 'cg 10/1/2022 18:50:25'!
+serDivididoPor: UnEntero
+	^ self.! !
+
 
 !Zero methodsFor: 'arithmetic operations' stamp: 'cg 10/1/2022 18:01:12'!
 fibonacci
@@ -608,10 +668,10 @@ dividirsePorEntero: UnEntero
 	^ (self numerator )/ (self denominator * UnEntero).
 	! !
 
-!Fraccion methodsFor: 'dd - arithmetic operations' stamp: 'cg 9/30/2022 19:17:20'!
+!Fraccion methodsFor: 'dd - arithmetic operations' stamp: 'cg 10/1/2022 18:40:12'!
 invertir
 	(denominator isZero) ifTrue: [^self class canNotDivideByZeroErrorDescription].
-	^Fraccion with: denominator over: numerator.! !
+	^denominator / numerator.! !
 
 !Fraccion methodsFor: 'dd - arithmetic operations' stamp: 'cg 9/30/2022 18:55:03'!
 multiplicarseConEntero: UnEntero
@@ -727,21 +787,17 @@ printOn: aStream
 Fraccion class
 	instanceVariableNames: ''!
 
-!Fraccion class methodsFor: 'intance creation' stamp: 'cg 10/1/2022 18:17:13'!
-with: aDividend over: aDivisor
-
+!Fraccion class methodsFor: 'intance creation' stamp: 'cg 10/1/2022 19:36:05'!
+gcdwith: aDividend over: aDivisor
 	| greatestCommonDivisor numerator denominator |
-		
-	aDivisor isZero ifTrue: [ self error: self canNotDivideByZeroErrorDescription ].
-	aDividend isZero ifTrue: [ ^aDividend ].
 	
-	aDivisor isNegative ifTrue:[ ^aDividend negated / aDivisor negated].
-	
+
 	greatestCommonDivisor := aDividend greatestCommonDivisorWith: aDivisor. 
 	numerator := aDividend // greatestCommonDivisor.
 	denominator := aDivisor // greatestCommonDivisor.
 	
-	denominator isOne ifTrue: [ ^numerator ].
+	^denominator generarFraccionIrreductible: numerator.! !
 
-	^self new initializeWith: numerator over: denominator
-	! !
+!Fraccion class methodsFor: 'intance creation' stamp: 'cg 10/1/2022 19:08:16'!
+with: aDividend over: aDivisor 
+	^self new initializeWith: aDividend over: aDivisor.! !
