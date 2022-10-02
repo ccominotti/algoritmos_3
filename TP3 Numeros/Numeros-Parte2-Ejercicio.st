@@ -668,10 +668,10 @@ dividirsePorEntero: UnEntero
 	^ (self numerator )/ (self denominator * UnEntero).
 	! !
 
-!Fraccion methodsFor: 'dd - arithmetic operations' stamp: 'cg 10/1/2022 18:40:12'!
+!Fraccion methodsFor: 'dd - arithmetic operations' stamp: 'cg 10/2/2022 09:51:05'!
 invertir
-	(denominator isZero) ifTrue: [^self class canNotDivideByZeroErrorDescription].
-	^denominator / numerator.! !
+	^denominator / numerator.
+	! !
 
 !Fraccion methodsFor: 'dd - arithmetic operations' stamp: 'cg 9/30/2022 18:55:03'!
 multiplicarseConEntero: UnEntero
@@ -683,11 +683,11 @@ multiplicarseConFraccion: UnaFraccion
 	^(numerator * UnaFraccion numerator) / (denominator * UnaFraccion denominator).
 	! !
 
-!Fraccion methodsFor: 'dd - arithmetic operations' stamp: 'cg 9/30/2022 17:49:54'!
+!Fraccion methodsFor: 'dd - arithmetic operations' stamp: 'cg 10/2/2022 09:52:12'!
 sumarConEntero: UnEntero
-	|NumeradorAdder|
-	NumeradorAdder := UnEntero * denominator.
-	^((NumeradorAdder + numerator)/denominator).
+	|NumeradorConFactorComun|
+	NumeradorConFactorComun := UnEntero * denominator.
+	^((NumeradorConFactorComun + numerator)/denominator).
 	! !
 
 !Fraccion methodsFor: 'dd - arithmetic operations' stamp: 'cg 9/30/2022 17:51:02'!
@@ -725,10 +725,8 @@ sumarConFraccion: UnaFraccion
 	^aDivisor dividirAFraccion: self.! !
 
 
-!Fraccion methodsFor: 'comparing' stamp: 'HernanWilkinson 5/7/2016 20:42'!
-= anObject
-
-	^(anObject isKindOf: self class) and: [ (numerator * anObject denominator) = (denominator * anObject numerator) ]! !
+!Fraccion methodsFor: 'comparing' stamp: 'cg 10/2/2022 09:43:03'!
+= anObject	^(anObject isKindOf: self class) and: [ (numerator * anObject denominator) = (denominator * anObject numerator) ]! !
 
 !Fraccion methodsFor: 'comparing' stamp: 'HernanWilkinson 5/7/2016 20:50'!
 hash
@@ -736,10 +734,8 @@ hash
 	^(numerator hash / denominator hash) hash! !
 
 
-!Fraccion methodsFor: 'accessing' stamp: 'HernanWilkinson 5/7/2016 21:56'!
-denominator
-
-	^ denominator! !
+!Fraccion methodsFor: 'accessing' stamp: 'cg 10/2/2022 09:44:10'!
+denominator	^ denominator! !
 
 !Fraccion methodsFor: 'accessing' stamp: 'cg 9/29/2022 19:46:45'!
 numerator
