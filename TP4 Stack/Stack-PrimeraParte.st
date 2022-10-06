@@ -5,7 +5,7 @@ TestCase subclass: #StackTest
 	poolDictionaries: ''
 	category: 'StackPrimeraParte'!
 
-!StackTest methodsFor: 'as yet unclassified' stamp: 'cg 10/6/2022 20:04:01'!
+!StackTest methodsFor: 'setup' stamp: 'cg 10/6/2022 20:04:01'!
 newStackWith: Elements
 	
 	|stack|
@@ -18,7 +18,8 @@ newStackWith: Elements
 	
 	! !
 
-!StackTest methodsFor: 'as yet unclassified' stamp: 'IL 10/1/2022 19:24:17'!
+
+!StackTest methodsFor: 'tests' stamp: 'IL 10/1/2022 19:24:17'!
 test01StackShouldBeEmptyWhenCreated
 
 	| stack |
@@ -27,14 +28,14 @@ test01StackShouldBeEmptyWhenCreated
 	
 	self assert: stack isEmpty! !
 
-!StackTest methodsFor: 'as yet unclassified' stamp: 'cg 10/6/2022 20:08:00'!
+!StackTest methodsFor: 'tests' stamp: 'cg 10/6/2022 20:08:00'!
 test02StackShouldAddAnElementCorrectly
 
 	| stack |
 	stack := self newStackWith: {'Greta'}.
 	self deny: stack isEmpty.	! !
 
-!StackTest methodsFor: 'as yet unclassified' stamp: 'cg 10/6/2022 20:02:15'!
+!StackTest methodsFor: 'tests' stamp: 'cg 10/6/2022 20:02:15'!
 test03StackShouldRemoveAnElementCorrectly
 
 	| stack |
@@ -45,8 +46,8 @@ test03StackShouldRemoveAnElementCorrectly
 	
 	! !
 
-!StackTest methodsFor: 'as yet unclassified' stamp: 'cg 10/6/2022 20:05:13'!
-test04StackShouldHaveACorrectBehavior
+!StackTest methodsFor: 'tests' stamp: 'cg 10/6/2022 20:18:09'!
+test04StackShouldHaveACorrectLIFOBehavior
 
 	| stack elementsListToTest|
 	
@@ -54,12 +55,11 @@ test04StackShouldHaveACorrectBehavior
 	stack := self newStackWith: elementsListToTest.	
 	elementsListToTest reverseDo: [:AnElement | self assert: AnElement equals: stack pop].
 	
-	self assert: stack isEmpty.
 	
 	
 	! !
 
-!StackTest methodsFor: 'as yet unclassified' stamp: 'cg 10/6/2022 20:07:39'!
+!StackTest methodsFor: 'tests' stamp: 'cg 10/6/2022 20:07:39'!
 test05StackShouldShowTheLastElementCorrectly
 
 	| stack |
