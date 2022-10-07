@@ -5,14 +5,14 @@ TestCase subclass: #StackTest
 	poolDictionaries: ''
 	category: 'StackPrimeraParte'!
 
-!StackTest methodsFor: 'setup' stamp: 'cg 10/6/2022 20:04:01'!
+!StackTest methodsFor: 'setup' stamp: 'gmor 10/7/2022 11:16:12'!
 newStackWith: Elements
 	
 	|stack|
 	
 	stack:= Stack new.
 	
-	Elements do:[:AnElement | stack push: AnElement].
+	Elements do: [:AnElement | stack push: AnElement].
 	
 	^stack.
 	
@@ -79,17 +79,21 @@ Object subclass: #Stack
 isEmpty
 	^listaDeElementos isEmpty. ! !
 
-!Stack methodsFor: 'public use' stamp: 'cg 10/6/2022 19:46:17'!
+!Stack methodsFor: 'public use' stamp: 'gmor 10/7/2022 11:16:53'!
 pop
-	^[listaDeElementos removeLast] on: Error do:[self error: self class emptyStackErrorDescription].! !
+	^ [listaDeElementos removeLast] 
+		on: Error 
+		do: [self error: self class emptyStackErrorDescription].! !
 
 !Stack methodsFor: 'public use' stamp: 'cg 10/6/2022 19:21:37'!
 push: AnElement
 	listaDeElementos addLast: AnElement.! !
 
-!Stack methodsFor: 'public use' stamp: 'cg 10/6/2022 19:46:12'!
+!Stack methodsFor: 'public use' stamp: 'gmor 10/7/2022 11:17:09'!
 top
-	^[listaDeElementos last] on: Error do:[self error: self class emptyStackErrorDescription].! !
+	^[listaDeElementos last] 
+		on: Error 
+		do: [self error: self class emptyStackErrorDescription].! !
 
 
 !Stack methodsFor: 'private' stamp: 'cg 10/6/2022 19:18:59'!
@@ -102,6 +106,6 @@ initialize
 Stack class
 	instanceVariableNames: 'listaDeElementos'!
 
-!Stack class methodsFor: 'as yet unclassified' stamp: 'cg 10/6/2022 19:44:33'!
+!Stack class methodsFor: 'errors' stamp: 'gmor 10/7/2022 11:17:50'!
 emptyStackErrorDescription
-	^'Pila vacia'.! !
+	^'La pila está vacía'.! !
