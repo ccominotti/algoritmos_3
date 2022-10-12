@@ -137,30 +137,37 @@ test10CanNotTopWhenThereAreNoObjectsInTheStack
 
 !classDefinition: #SentenceFinderByPrefixTest category: 'Stack-Exercise'!
 TestCase subclass: #SentenceFinderByPrefixTest
-	instanceVariableNames: 'stack'
+	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!SentenceFinderByPrefixTest methodsFor: 'as yet unclassified' stamp: 'cg 10/9/2022 17:44:58'!
-find: APrefix
-	| resultList stackInverted|
+!SentenceFinderByPrefixTest methodsFor: 'as yet unclassified' stamp: 'cc 10/11/2022 21:43:06'!
+test01SearchingInAnStackShouldReturnAnCollectionWithACorrectSize
+	| stack finder result| 
 	
-	resultList := OrderedCollection new.
-	stackInverted := OOStack new.
+	stack := OOStack new.
 	
-	[stack isEmpty] whileFalse: [
-		| elementToCheck |
-		elementToCheck := stack top.
-		(elementToCheck beginsWith: APrefix) ifTrue: [ resultList add: elementToCheck].
-		stackInverted push: stack pop.
-		].
+	finder := SentenceFinderByPrefix new.
+	stack push: 'Gret'.
+	stack push: 'GretaLinda'.
 	
-	[stackInverted isEmpty] whileFalse: [
-		stack push: stackInverted pop.
-		].
+	result := finder find: 'Greta' in: stack.
+	
+	self deny: result isEmpty. 
+	self assert: 1 equals: (result size). ! !
 
-	^resultList.! !
+!SentenceFinderByPrefixTest methodsFor: 'as yet unclassified' stamp: 'cc 10/11/2022 21:31:39'!
+test02SearchingInAnEmptyStackShouldReturnAnEmptyCollection
+	| stack finder result| 
+	
+	stack := OOStack new.
+	
+	finder := SentenceFinderByPrefix new.
+	
+	result := finder find: 'Greta' in: stack.
+	
+	self assert: result isEmpty. ! !
 
 
 !classDefinition: #NameOfSubclass category: 'Stack-Exercise'!
@@ -173,65 +180,56 @@ Object subclass: #NameOfSubclass
 
 !classDefinition: #OOStack category: 'Stack-Exercise'!
 Object subclass: #OOStack
-	instanceVariableNames: 'elementsList'
+	instanceVariableNames: 'topNode size'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!OOStack methodsFor: 'private' stamp: 'cg 10/9/2022 20:52:30'!
+!OOStack methodsFor: 'private' stamp: 'cc 10/11/2022 21:00:55'!
 initialize
-	elementsList := OrderedCollection new.
-
-
+	topNode := Base new.
 	
-	! !
+	size :=0.! !
 
 
-!OOStack methodsFor: 'public use' stamp: 'cg 10/9/2022 16:19:13'!
+!OOStack methodsFor: 'testing' stamp: 'cc 10/11/2022 21:01:10'!
 isEmpty
-	^elementsList isEmpty.
+	^size =0.
 	
 	! !
 
-!OOStack methodsFor: 'public use' stamp: 'cg 10/9/2022 20:51:23'!
+
+!OOStack methodsFor: 'operations' stamp: 'cc 10/11/2022 21:11:33'!
 pop
-	(self size) timesRepeat:  [^elementsList removeLast].
-	self error: self class stackEmptyErrorDescription.
-	"elementsList isEmpty ifTrue: [
-		closureSegunVacioPop := [self error: self class stackEmptyErrorDescription].
-		closureSegunVacioTop := [self error: self class stackEmptyErrorDescription].
-	].
-	^closureSegunVacioPop value.
-	"
+	|elementToReturn|
+	elementToReturn := topNode nodeValue.
 	
-	"elementsList isEmpty 
-		ifTrue:[ self error: self class stackEmptyErrorDescription] 
-		ifFalse: [^elementsList removeLast]"
-	
-	
-	
+	topNode := topNode previousNode.
+	size := size - 1.
+	^elementToReturn.
 	
 	! !
 
-!OOStack methodsFor: 'public use' stamp: 'cg 10/9/2022 20:52:04'!
+!OOStack methodsFor: 'operations' stamp: 'cc 10/11/2022 21:11:17'!
 push: AnElement
-	elementsList addLast: AnElement.
+	topNode := Element with: AnElement after: topNode.
+	size  := size + 1.
 	
 
 	! !
 
-!OOStack methodsFor: 'public use' stamp: 'cg 10/9/2022 16:23:46'!
+!OOStack methodsFor: 'operations' stamp: 'cc 10/11/2022 20:58:10'!
 size
-	^elementsList size.
+	^size.
 	
 	
 	
 	! !
 
-!OOStack methodsFor: 'public use' stamp: 'cg 10/9/2022 20:51:48'!
+!OOStack methodsFor: 'operations' stamp: 'cc 10/11/2022 20:57:50'!
 top
-	(self size) timesRepeat:  [^elementsList last].
-	self error: self class stackEmptyErrorDescription.
+	^topNode nodeValue.
+	
 	
 	
 	
@@ -243,7 +241,89 @@ top
 OOStack class
 	instanceVariableNames: ''!
 
-!OOStack class methodsFor: 'error descriptions' stamp: 'HernanWilkinson 5/7/2012 11:51'!
+!OOStack class methodsFor: 'error descriptions' stamp: 'cc 10/11/2022 21:37:58'!
 stackEmptyErrorDescription
-	
 	^ 'Stack is empty'! !
+
+
+!classDefinition: #SentenceFinderByPrefix category: 'Stack-Exercise'!
+Object subclass: #SentenceFinderByPrefix
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Stack-Exercise'!
+
+!SentenceFinderByPrefix methodsFor: 'as yet unclassified' stamp: 'cc 10/11/2022 21:26:40'!
+find: aPrefix in: aStack
+	| resultList stackInverted|
+	
+	resultList := OrderedCollection new.
+	stackInverted := OOStack new.
+	
+	[aStack isEmpty] whileFalse: [
+		| elementToCheck |
+		elementToCheck := aStack top.
+		(elementToCheck beginsWith: aPrefix) ifTrue: [ resultList add: elementToCheck].
+		stackInverted push: aStack pop.
+		].
+	
+	[stackInverted isEmpty] whileFalse: [
+		aStack push: stackInverted pop.
+		].
+
+	^resultList.! !
+
+
+!classDefinition: #StackNode category: 'Stack-Exercise'!
+Object subclass: #StackNode
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Stack-Exercise'!
+
+!StackNode methodsFor: 'as yet unclassified' stamp: 'cc 10/11/2022 20:52:11'!
+nodeValue
+	^ self subclassResponsibility.! !
+
+
+!classDefinition: #Base category: 'Stack-Exercise'!
+StackNode subclass: #Base
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Stack-Exercise'!
+
+!Base methodsFor: 'private' stamp: 'cc 10/11/2022 21:39:12'!
+nodeValue
+	self error: OOStack stackEmptyErrorDescription.! !
+
+
+!classDefinition: #Element category: 'Stack-Exercise'!
+StackNode subclass: #Element
+	instanceVariableNames: 'content previousNode'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Stack-Exercise'!
+
+!Element methodsFor: 'private' stamp: 'cc 10/11/2022 21:06:12'!
+initializeWith: someContent after: aReference
+	content := someContent.
+	previousNode := aReference.! !
+
+!Element methodsFor: 'private' stamp: 'cc 10/11/2022 20:44:31'!
+nodeValue
+	^ content.! !
+
+!Element methodsFor: 'private' stamp: 'cc 10/11/2022 20:51:15'!
+previousNode
+	^previousNode.! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'Element class' category: 'Stack-Exercise'!
+Element class
+	instanceVariableNames: ''!
+
+!Element class methodsFor: 'as yet unclassified' stamp: 'cc 10/11/2022 21:06:56'!
+with: someContent after: aReference
+	^Element new initializeWith: someContent after: aReference.! !
