@@ -142,32 +142,145 @@ TestCase subclass: #SentenceFinderByPrefixTest
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!SentenceFinderByPrefixTest methodsFor: 'as yet unclassified' stamp: 'cc 10/11/2022 21:43:06'!
-test01SearchingInAnStackShouldReturnAnCollectionWithACorrectSize
-	| stack finder result| 
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'cc 10/13/2022 19:58:04'!
+finderForStackWith: aCollection  
+	| aStack | 
 	
-	stack := OOStack new.
+	aStack := OOStack new.
 	
-	finder := SentenceFinderByPrefix new.
-	stack push: 'Gret'.
-	stack push: 'GretaLinda'.
+	aCollection do: [:element | aStack push: element].
 	
-	result := finder find: 'Greta' in: stack.
+	^SentenceFinderByPrefix newWith: aStack.
+	
+	
+! !
+
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'cc 10/13/2022 19:59:27'!
+test01SearchingInAnEmptyStackShouldReturnAnEmptyCollection
+	|  finder result | 
+		
+	finder := self finderForStackWith: {}.
+	
+	result := finder find: 'Greta'.
+	
+	self assert: result isEmpty. ! !
+
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'cc 10/13/2022 20:00:25'!
+test02SearchingOnePrefixInAStackOfTwo
+	|  finder result | 
+		
+	finder := self finderForStackWith: {'Gret'. 'GretaLinda'}.
+	
+	result := finder find: 'Greta'.
 	
 	self deny: result isEmpty. 
 	self assert: 1 equals: (result size). ! !
 
-!SentenceFinderByPrefixTest methodsFor: 'as yet unclassified' stamp: 'cc 10/11/2022 21:31:39'!
-test02SearchingInAnEmptyStackShouldReturnAnEmptyCollection
-	| stack finder result| 
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'cc 10/13/2022 20:05:24'!
+test03SearchingAnEmptyPrefixInAStack
+	|  finder result collection| 
 	
-	stack := OOStack new.
+	collection := {'Greta'. 'GretaLinda'. 'Rodolfo'. 'Mirko'. 'Tito'. 'Pepe'. 'Luke'}.
 	
-	finder := SentenceFinderByPrefix new.
+	finder := self finderForStackWith: collection.
 	
-	result := finder find: 'Greta' in: stack.
+	result := finder find: ''.
 	
-	self assert: result isEmpty. ! !
+	self deny: result isEmpty. 
+	self assert: (collection size) equals: (result size). ! !
+
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'cc 10/13/2022 20:19:21'!
+test04SearchingAPrefixIsCAPsSensitive
+	|  finder result collection| 
+	
+	collection := {'greta'. 'Rodolfo'}.
+	
+	finder := self finderForStackWith: collection.
+	
+	result := finder find: 'rodolfo'.
+	
+	self assert: result isEmpty. 
+
+	result := finder find: 'Greta'.
+	self assert: result isEmpty. 
+	
+! !
+
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'cc 10/13/2022 20:16:53'!
+test05SearchingInAStackWithRepeatedWord
+	|  finder result collection| 
+	
+	collection := {'greta'. 'Rodolfo'. 'Rodolfo'. 'Luke'. 'Tito'. 'Pepe'. 'Rodolfo'. 'Mirko'}.
+	
+	finder := self finderForStackWith: collection.
+	
+	result := finder find: 'Rodolfo'.
+	
+	self deny: result isEmpty. 
+
+	self assert: 3 equals: (result size).
+! !
+
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'cc 10/13/2022 20:19:15'!
+test06SearchingASpaceShouldWorkPropertly
+	|  finder result collection| 
+	
+	collection := {'greta'. 'Rodolfo'}.
+	
+	finder := self finderForStackWith: collection.
+	
+	result := finder find: ' '.
+	
+	self assert: result isEmpty. 
+
+	
+! !
+
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'cc 10/13/2022 20:19:12'!
+test07SearchingASpacedPrefixShouldWorkPropertly
+	|  finder result collection| 
+	
+	collection := {'greta'. 'Rodolfo'}.
+	
+	finder := self finderForStackWith: collection.
+	
+	result := finder find: ' Rodolfo'.
+	
+	self assert: result isEmpty. 
+
+	
+! !
+
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'cc 10/13/2022 20:19:09'!
+test08SearchingAPrefixIncludeInThePostfixShouldNotWork
+	|  finder result collection| 
+	
+	collection := {'greta'. 'Rodolfo'}.
+	
+	finder := self finderForStackWith: collection.
+	
+	result := finder find: 'eta'.
+	
+	self assert: result isEmpty. 
+
+	
+! !
+
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'cc 10/13/2022 20:19:04'!
+test09SearchingANumberShouldWork
+	|  finder result collection | 
+	
+	collection := {'Greta'. 'Rodolfo'. '7'. '5'. '3'. '53'. '500'. 'Pepe'}.
+	
+	finder := self finderForStackWith: collection.
+	
+	result := finder find: '5'.
+	
+	self assert: 3 equals: result size. 
+
+	
+! !
+
 
 
 !classDefinition: #NameOfSubclass category: 'Stack-Exercise'!
@@ -248,30 +361,46 @@ stackEmptyErrorDescription
 
 !classDefinition: #SentenceFinderByPrefix category: 'Stack-Exercise'!
 Object subclass: #SentenceFinderByPrefix
-	instanceVariableNames: ''
+	instanceVariableNames: 'stack'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!SentenceFinderByPrefix methodsFor: 'as yet unclassified' stamp: 'cc 10/11/2022 21:26:40'!
-find: aPrefix in: aStack
-	| resultList stackInverted|
+!SentenceFinderByPrefix methodsFor: 'as yet unclassified' stamp: 'cc 10/13/2022 19:52:14'!
+find: aPrefix 
+	| resultList stackInverted |
 	
 	resultList := OrderedCollection new.
 	stackInverted := OOStack new.
 	
-	[aStack isEmpty] whileFalse: [
+	[stack isEmpty] whileFalse: [
 		| elementToCheck |
-		elementToCheck := aStack top.
+		elementToCheck := stack top.
 		(elementToCheck beginsWith: aPrefix) ifTrue: [ resultList add: elementToCheck].
-		stackInverted push: aStack pop.
+		stackInverted push: stack pop.
 		].
 	
 	[stackInverted isEmpty] whileFalse: [
-		aStack push: stackInverted pop.
+		stack push: stackInverted pop.
 		].
 
 	^resultList.! !
+
+!SentenceFinderByPrefix methodsFor: 'as yet unclassified' stamp: 'cc 10/13/2022 19:55:43'!
+setStack: aStack
+
+	stack := aStack.! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'SentenceFinderByPrefix class' category: 'Stack-Exercise'!
+SentenceFinderByPrefix class
+	instanceVariableNames: ''!
+
+!SentenceFinderByPrefix class methodsFor: 'as yet unclassified' stamp: 'cc 10/13/2022 19:55:53'!
+newWith: aStack
+
+	^self new setStack: aStack.! !
 
 
 !classDefinition: #StackNode category: 'Stack-Exercise'!
