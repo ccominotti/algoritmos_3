@@ -282,14 +282,6 @@ test09SearchingANumberShouldWork
 ! !
 
 
-!classDefinition: #NameOfSubclass category: 'Stack-Exercise'!
-Object subclass: #NameOfSubclass
-	instanceVariableNames: 'elementsList'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Stack-Exercise'!
-
-
 !classDefinition: #OOStack category: 'Stack-Exercise'!
 Object subclass: #OOStack
 	instanceVariableNames: 'topNode size'
@@ -362,7 +354,7 @@ Object subclass: #SentenceFinderByPrefix
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!SentenceFinderByPrefix methodsFor: 'as yet unclassified' stamp: 'cc 10/14/2022 13:08:04'!
+!SentenceFinderByPrefix methodsFor: 'operations' stamp: 'cc 10/14/2022 13:08:04'!
 find: aPrefix 
 	| resultList stackInverted |
 	
@@ -382,7 +374,7 @@ find: aPrefix
 
 	^resultList.! !
 
-!SentenceFinderByPrefix methodsFor: 'as yet unclassified' stamp: 'cc 10/13/2022 19:55:43'!
+!SentenceFinderByPrefix methodsFor: 'operations' stamp: 'cc 10/13/2022 19:55:43'!
 setStack: aStack
 
 	stack := aStack.! !
@@ -393,7 +385,7 @@ setStack: aStack
 SentenceFinderByPrefix class
 	instanceVariableNames: ''!
 
-!SentenceFinderByPrefix class methodsFor: 'as yet unclassified' stamp: 'cc 10/13/2022 19:55:53'!
+!SentenceFinderByPrefix class methodsFor: 'creation' stamp: 'cc 10/13/2022 19:55:53'!
 newWith: aStack
 
 	^self new setStack: aStack.! !
@@ -406,7 +398,7 @@ Object subclass: #StackNode
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!StackNode methodsFor: 'as yet unclassified' stamp: 'cc 10/11/2022 20:52:11'!
+!StackNode methodsFor: 'accessing' stamp: 'cc 10/11/2022 20:52:11'!
 nodeValue
 	^ self subclassResponsibility.! !
 
@@ -449,6 +441,6 @@ previousNode
 Element class
 	instanceVariableNames: ''!
 
-!Element class methodsFor: 'as yet unclassified' stamp: 'cc 10/11/2022 21:06:56'!
+!Element class methodsFor: 'creation' stamp: 'cc 10/11/2022 21:06:56'!
 with: someContent after: aReference
 	^Element new initializeWith: someContent after: aReference.! !
