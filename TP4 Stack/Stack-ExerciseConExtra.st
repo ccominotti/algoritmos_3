@@ -5,52 +5,52 @@ TestCase subclass: #OOStackTest
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!OOStackTest methodsFor: 'test' stamp: 'cc 10/14/2022 13:06:48'!
+!OOStackTest methodsFor: 'test' stamp: 'cc 10/14/2022 11:42:13'!
 test01StackShouldBeEmptyWhenCreated
 
 	| stack |
-	stack := OOStack new.
+	stack := UnlimitedStack new.
 	
 	self assert: stack isEmpty! !
 
-!OOStackTest methodsFor: 'test' stamp: 'cc 10/14/2022 13:06:52'!
+!OOStackTest methodsFor: 'test' stamp: 'cc 10/14/2022 11:42:19'!
 test02PushAddElementsToTheStack
 
 	| stack |
-	stack := OOStack new.
+	stack := UnlimitedStack new.
 	
 	stack push: 'something'.
 	
 	self deny: stack isEmpty! !
 
-!OOStackTest methodsFor: 'test' stamp: 'cc 10/14/2022 13:06:58'!
+!OOStackTest methodsFor: 'test' stamp: 'cc 10/14/2022 11:42:22'!
 test03PopRemovesElementsFromTheStack
 
 	| stack |
-	stack := OOStack new.
+	stack := UnlimitedStack new.
 	stack push: 'something'.
 	
 	stack pop.
 	
 	self assert: stack isEmpty! !
 
-!OOStackTest methodsFor: 'test' stamp: 'cc 10/14/2022 13:07:02'!
+!OOStackTest methodsFor: 'test' stamp: 'cc 10/14/2022 11:42:25'!
 test04PopReturnsLastPushedObject
 
 	| stack pushedObject |
-	stack := OOStack new.
+	stack := UnlimitedStack new.
 	pushedObject := 'something'.
 	
 	stack push: pushedObject.
 	
 	self assert: pushedObject equals: stack pop! !
 
-!OOStackTest methodsFor: 'test' stamp: 'cc 10/14/2022 13:07:05'!
+!OOStackTest methodsFor: 'test' stamp: 'cc 10/14/2022 11:42:30'!
 test05StackBehavesLIFO
 
 	| stack firstPushedObject secondPushedObject |
 	
-	stack := OOStack new.
+	stack := UnlimitedStack new.
 	firstPushedObject := 'first'.
 	secondPushedObject := 'second'.
 	
@@ -62,11 +62,11 @@ test05StackBehavesLIFO
 	self assert: stack isEmpty 
 	! !
 
-!OOStackTest methodsFor: 'test' stamp: 'cc 10/14/2022 13:07:08'!
+!OOStackTest methodsFor: 'test' stamp: 'cc 10/14/2022 11:42:34'!
 test06TopReturnsLastPushedObject
 
 	| stack pushedObject |
-	stack := OOStack new.
+	stack := UnlimitedStack new.
 	pushedObject := 'something'.
 	
 	stack push: pushedObject.
@@ -74,12 +74,12 @@ test06TopReturnsLastPushedObject
 	self assert: pushedObject equals: stack top.
 	! !
 
-!OOStackTest methodsFor: 'test' stamp: 'cc 10/14/2022 13:07:14'!
+!OOStackTest methodsFor: 'test' stamp: 'cc 10/14/2022 11:42:55'!
 test07TopDoesNotRemoveObjectFromStack
 
 	| stack pushedObject |
 	
-	stack := OOStack new.
+	stack := UnlimitedStack new.
 	pushedObject := 'something'.
 	
 	stack push: pushedObject.
@@ -89,12 +89,12 @@ test07TopDoesNotRemoveObjectFromStack
 	self assert: 1 equals: stack size.
 	! !
 
-!OOStackTest methodsFor: 'test' stamp: 'cc 10/14/2022 13:07:18'!
+!OOStackTest methodsFor: 'test' stamp: 'cc 10/14/2022 11:42:45'!
 test08CanNotPopWhenThereAreNoObjectsInTheStack
 
 	| stack  |
 	
-	stack := OOStack new.
+	stack := UnlimitedStack new.
 	self
 		should: [ stack pop ]
 		raise: Error - MessageNotUnderstood 
@@ -103,12 +103,12 @@ test08CanNotPopWhenThereAreNoObjectsInTheStack
 		
 ! !
 
-!OOStackTest methodsFor: 'test' stamp: 'cc 10/14/2022 13:07:22'!
+!OOStackTest methodsFor: 'test' stamp: 'cc 10/14/2022 11:43:00'!
 test09CanNotPopWhenThereAreNoObjectsInTheStackAndTheStackHadObjects
 
 	| stack  |
 	
-	stack := OOStack new.
+	stack := UnlimitedStack new.
 	stack push: 'something'.
 	stack pop.
 	
@@ -120,12 +120,12 @@ test09CanNotPopWhenThereAreNoObjectsInTheStackAndTheStackHadObjects
 		
 ! !
 
-!OOStackTest methodsFor: 'test' stamp: 'cc 10/14/2022 13:07:26'!
+!OOStackTest methodsFor: 'test' stamp: 'cc 10/14/2022 11:43:03'!
 test10CanNotTopWhenThereAreNoObjectsInTheStack
 
 	| stack  |
 	
-	stack := OOStack new.
+	stack := UnlimitedStack new.
 	self
 		should: [ stack top ]
 		raise: Error - MessageNotUnderstood 
@@ -133,6 +133,58 @@ test10CanNotTopWhenThereAreNoObjectsInTheStack
 			self assert: OOStack stackEmptyErrorDescription equals: anError messageText ]
 		
 ! !
+
+!OOStackTest methodsFor: 'test' stamp: 'cc 10/14/2022 09:15:40'!
+test11ALimitedStackShouldBeEmptyWhenCreate
+
+	| stack  |
+	
+	stack := LimitedStack new initializeWithLimit: 5.
+	self assert: stack isEmpty
+! !
+
+!OOStackTest methodsFor: 'test' stamp: 'cc 10/14/2022 09:20:49'!
+test12ALimitedStackShouldNotPushMoreThanLimitatedSize
+
+	| stack  |
+	
+	stack := LimitedStack new initializeWithLimit: 3.	
+	stack push: 'Greta'.
+	stack push: 'Luke'.
+	stack push: 'Rodolfo'.
+	
+	self deny: stack isEmpty.
+	
+	self
+		should: [ stack push: 'Tito' ]
+		raise: Error -  MessageNotUnderstood 
+		withExceptionDo: [ :anError |
+			self assert: LimitedStack MaxSizeReachedErrorDescription equals: anError messageText ]
+	
+! !
+
+!OOStackTest methodsFor: 'test' stamp: 'cc 10/14/2022 09:22:19'!
+test13InALimitedStackTopReturnsLastPushedObject
+
+	| stack |
+	stack := LimitedStack new initializeWithLimit: 3.	
+	stack push: 'something'.
+	
+	self assert: 'something' equals: stack top.
+	! !
+
+!OOStackTest methodsFor: 'test' stamp: 'cc 10/14/2022 09:24:23'!
+test14InALimitedStackHasLIFOBehaviour
+	| stack |
+	stack := LimitedStack new initializeWithLimit: 3.	
+	stack push: 'something'.
+	stack push: 'Rodolfo'.
+	stack push: 'Greta'.
+
+	
+	self assert: 'Greta' equals: stack pop.
+	self assert: 'Rodolfo' equals: stack pop.
+	! !
 
 
 !classDefinition: #SentenceFinderByPrefixTest category: 'Stack-Exercise'!
@@ -142,11 +194,24 @@ TestCase subclass: #SentenceFinderByPrefixTest
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'cc 10/14/2022 13:08:29'!
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'cc 10/14/2022 11:30:27'!
+finderForLimitedStackOf: aLimit With: aCollection  
+	| aStack | 
+	
+	aStack := LimitedStack  new initializeWithLimit: aLimit.
+	
+	aCollection do: [:element | aStack push: element].
+	
+	^SentenceFinderByPrefix newWith: aStack.
+	
+	
+! !
+
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'cc 10/14/2022 11:45:27'!
 finderForStackWith: aCollection  
 	| aStack | 
 	
-	aStack := OOStack new.
+	aStack := UnlimitedStack new.
 	
 	aCollection do: [:element | aStack push: element].
 	
@@ -281,6 +346,17 @@ test09SearchingANumberShouldWork
 	
 ! !
 
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'cc 10/14/2022 11:31:16'!
+test10SearchingOnePrefixInALimitedStack
+	|  finder result | 
+		
+	finder := self finderForLimitedStackOf: 3 With: {'Gret'. 'GretaLinda'}.
+	
+	result := finder find: 'Greta'.
+	
+	self deny: result isEmpty. 
+	self assert: 1 equals: (result size). ! !
+
 
 !classDefinition: #NameOfSubclass category: 'Stack-Exercise'!
 Object subclass: #NameOfSubclass
@@ -322,10 +398,10 @@ pop
 	
 	! !
 
-!OOStack methodsFor: 'operations' stamp: 'cc 10/14/2022 13:06:15'!
+!OOStack methodsFor: 'operations' stamp: 'cc 10/14/2022 11:41:49'!
 push: AnElement
-	topNode := Element with: AnElement after: topNode.
-	size  := size + 1.	! !
+	self subclassResponsibility.
+	! !
 
 !OOStack methodsFor: 'operations' stamp: 'cc 10/11/2022 20:58:10'!
 size
@@ -355,6 +431,49 @@ stackEmptyErrorDescription
 	^ 'Stack is empty'! !
 
 
+!classDefinition: #LimitedStack category: 'Stack-Exercise'!
+OOStack subclass: #LimitedStack
+	instanceVariableNames: 'maxSize'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Stack-Exercise'!
+
+!LimitedStack methodsFor: 'operations' stamp: 'cc 10/14/2022 09:10:41'!
+push: AnElement
+	(maxSize = size) ifTrue: [self error: self class MaxSizeReachedErrorDescription ].
+	
+	topNode := Element with: AnElement after: topNode.
+	size  := size + 1.! !
+
+
+!LimitedStack methodsFor: 'initialization' stamp: 'cc 10/14/2022 08:56:02'!
+initializeWithLimit: limitedSize
+	maxSize := limitedSize.! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'LimitedStack class' category: 'Stack-Exercise'!
+LimitedStack class
+	instanceVariableNames: ''!
+
+!LimitedStack class methodsFor: 'error description' stamp: 'cc 10/14/2022 09:02:22'!
+MaxSizeReachedErrorDescription
+	^'Se alcanzo el maximo de elementos apilados'.! !
+
+
+!classDefinition: #UnlimitedStack category: 'Stack-Exercise'!
+OOStack subclass: #UnlimitedStack
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Stack-Exercise'!
+
+!UnlimitedStack methodsFor: 'operations' stamp: 'cc 10/14/2022 09:00:01'!
+push: AnElement
+	topNode := Element with: AnElement after: topNode.
+	size  := size + 1.! !
+
+
 !classDefinition: #SentenceFinderByPrefix category: 'Stack-Exercise'!
 Object subclass: #SentenceFinderByPrefix
 	instanceVariableNames: 'stack'
@@ -362,12 +481,12 @@ Object subclass: #SentenceFinderByPrefix
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!SentenceFinderByPrefix methodsFor: 'as yet unclassified' stamp: 'cc 10/14/2022 13:08:04'!
+!SentenceFinderByPrefix methodsFor: 'as yet unclassified' stamp: 'cc 10/14/2022 11:47:18'!
 find: aPrefix 
 	| resultList stackInverted |
 	
 	resultList := OrderedCollection new.
-	stackInverted := OOStack new.
+	stackInverted := UnlimitedStack new.
 	
 	[stack isEmpty] whileFalse: [
 		| elementToCheck |
