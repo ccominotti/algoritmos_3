@@ -134,6 +134,58 @@ test10CanNotTopWhenThereAreNoObjectsInTheStack
 		
 ! !
 
+!OOStackTest methodsFor: 'test' stamp: 'cc 10/14/2022 09:15:40'!
+test11ALimitedStackShouldBeEmptyWhenCreate
+
+	| stack  |
+	
+	stack := LimitedStack new initializeWithLimit: 5.
+	self assert: stack isEmpty
+! !
+
+!OOStackTest methodsFor: 'test' stamp: 'cc 10/14/2022 09:20:49'!
+test12ALimitedStackShouldNotPushMoreThanLimitatedSize
+
+	| stack  |
+	
+	stack := LimitedStack new initializeWithLimit: 3.	
+	stack push: 'Greta'.
+	stack push: 'Luke'.
+	stack push: 'Rodolfo'.
+	
+	self deny: stack isEmpty.
+	
+	self
+		should: [ stack push: 'Tito' ]
+		raise: Error -  MessageNotUnderstood 
+		withExceptionDo: [ :anError |
+			self assert: LimitedStack MaxSizeReachedErrorDescription equals: anError messageText ]
+	
+! !
+
+!OOStackTest methodsFor: 'test' stamp: 'cc 10/14/2022 09:22:19'!
+test13InALimitedStackTopReturnsLastPushedObject
+
+	| stack |
+	stack := LimitedStack new initializeWithLimit: 3.	
+	stack push: 'something'.
+	
+	self assert: 'something' equals: stack top.
+	! !
+
+!OOStackTest methodsFor: 'test' stamp: 'cc 10/14/2022 09:24:23'!
+test14InALimitedStackHasLIFOBehaviour
+	| stack |
+	stack := LimitedStack new initializeWithLimit: 3.	
+	stack push: 'something'.
+	stack push: 'Rodolfo'.
+	stack push: 'Greta'.
+
+	
+	self assert: 'Greta' equals: stack pop.
+	self assert: 'Rodolfo' equals: stack pop.
+	! !
+
 
 !classDefinition: #SentenceFinderByPrefixTest category: 'Stack-Exercise'!
 TestCase subclass: #SentenceFinderByPrefixTest
@@ -281,7 +333,6 @@ test09SearchingANumberShouldWork
 	
 ! !
 
-
 
 !classDefinition: #NameOfSubclass category: 'Stack-Exercise'!
 Object subclass: #NameOfSubclass
@@ -323,11 +374,10 @@ pop
 	
 	! !
 
-!OOStack methodsFor: 'operations' stamp: 'cc 10/11/2022 21:11:17'!
+!OOStack methodsFor: 'operations' stamp: 'cc 10/14/2022 09:10:51'!
 push: AnElement
 	topNode := Element with: AnElement after: topNode.
-	size  := size + 1.
-	
+	size  := size + 1.	
 
 	! !
 
@@ -348,6 +398,11 @@ top
 	
 	! !
 
+
+!OOStack methodsFor: 'as yet unclassified' stamp: 'cc 10/14/2022 09:11:08'!
+new
+	^ UnlimitedStack new.! !
+
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
 !classDefinition: 'OOStack class' category: 'Stack-Exercise'!
@@ -357,6 +412,50 @@ OOStack class
 !OOStack class methodsFor: 'error descriptions' stamp: 'cc 10/11/2022 21:37:58'!
 stackEmptyErrorDescription
 	^ 'Stack is empty'! !
+
+
+
+!classDefinition: #LimitedStack category: 'Stack-Exercise'!
+OOStack subclass: #LimitedStack
+	instanceVariableNames: 'maxSize'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Stack-Exercise'!
+
+!LimitedStack methodsFor: 'operations' stamp: 'cc 10/14/2022 09:10:41'!
+push: AnElement
+	(maxSize = size) ifTrue: [self error: self class MaxSizeReachedErrorDescription ].
+	
+	topNode := Element with: AnElement after: topNode.
+	size  := size + 1.! !
+
+
+!LimitedStack methodsFor: 'initialization' stamp: 'cc 10/14/2022 08:56:02'!
+initializeWithLimit: limitedSize
+	maxSize := limitedSize.! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'LimitedStack class' category: 'Stack-Exercise'!
+LimitedStack class
+	instanceVariableNames: ''!
+
+!LimitedStack class methodsFor: 'error description' stamp: 'cc 10/14/2022 09:02:22'!
+MaxSizeReachedErrorDescription
+	^'Se alcanzo el maximo de elementos apilados'.! !
+
+
+!classDefinition: #UnlimitedStack category: 'Stack-Exercise'!
+OOStack subclass: #UnlimitedStack
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Stack-Exercise'!
+
+!UnlimitedStack methodsFor: 'operations' stamp: 'cc 10/14/2022 09:00:01'!
+push: AnElement
+	topNode := Element with: AnElement after: topNode.
+	size  := size + 1.! !
 
 
 !classDefinition: #SentenceFinderByPrefix category: 'Stack-Exercise'!
