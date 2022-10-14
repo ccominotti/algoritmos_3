@@ -134,21 +134,21 @@ test10CanNotTopWhenThereAreNoObjectsInTheStack
 		
 ! !
 
-!OOStackTest methodsFor: 'test' stamp: 'cc 10/14/2022 09:15:40'!
+!OOStackTest methodsFor: 'test' stamp: 'gmp 10/14/2022 14:39:13'!
 test11ALimitedStackShouldBeEmptyWhenCreate
 
 	| stack  |
 	
-	stack := LimitedStack new initializeWithLimit: 5.
+	stack := LimitedStack newWithLimit: 5.
 	self assert: stack isEmpty
 ! !
 
-!OOStackTest methodsFor: 'test' stamp: 'cc 10/14/2022 09:20:49'!
+!OOStackTest methodsFor: 'test' stamp: 'gmp 10/14/2022 14:39:17'!
 test12ALimitedStackShouldNotPushMoreThanLimitatedSize
 
 	| stack  |
 	
-	stack := LimitedStack new initializeWithLimit: 3.	
+	stack := LimitedStack newWithLimit: 3.	
 	stack push: 'Greta'.
 	stack push: 'Luke'.
 	stack push: 'Rodolfo'.
@@ -163,20 +163,20 @@ test12ALimitedStackShouldNotPushMoreThanLimitatedSize
 	
 ! !
 
-!OOStackTest methodsFor: 'test' stamp: 'cc 10/14/2022 09:22:19'!
+!OOStackTest methodsFor: 'test' stamp: 'gmp 10/14/2022 14:39:22'!
 test13InALimitedStackTopReturnsLastPushedObject
 
 	| stack |
-	stack := LimitedStack new initializeWithLimit: 3.	
+	stack := LimitedStack newWithLimit: 3.	
 	stack push: 'something'.
 	
 	self assert: 'something' equals: stack top.
 	! !
 
-!OOStackTest methodsFor: 'test' stamp: 'cc 10/14/2022 09:24:23'!
+!OOStackTest methodsFor: 'test' stamp: 'gmp 10/14/2022 14:39:28'!
 test14InALimitedStackHasLIFOBehaviour
 	| stack |
-	stack := LimitedStack new initializeWithLimit: 3.	
+	stack := LimitedStack newWithLimit: 3.	
 	stack push: 'something'.
 	stack push: 'Rodolfo'.
 	stack push: 'Greta'.
@@ -194,11 +194,11 @@ TestCase subclass: #SentenceFinderByPrefixTest
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'cc 10/14/2022 11:30:27'!
+!SentenceFinderByPrefixTest methodsFor: 'test' stamp: 'gmp 10/14/2022 14:39:32'!
 finderForLimitedStackOf: aLimit With: aCollection  
 	| aStack | 
 	
-	aStack := LimitedStack  new initializeWithLimit: aLimit.
+	aStack := LimitedStack  newWithLimit: aLimit.
 	
 	aCollection do: [:element | aStack push: element].
 	
@@ -358,14 +358,6 @@ test10SearchingOnePrefixInALimitedStack
 	self assert: 1 equals: (result size). ! !
 
 
-!classDefinition: #NameOfSubclass category: 'Stack-Exercise'!
-Object subclass: #NameOfSubclass
-	instanceVariableNames: 'elementsList'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Stack-Exercise'!
-
-
 !classDefinition: #OOStack category: 'Stack-Exercise'!
 Object subclass: #OOStack
 	instanceVariableNames: 'topNode size'
@@ -373,11 +365,11 @@ Object subclass: #OOStack
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!OOStack methodsFor: 'private' stamp: 'cc 10/11/2022 21:00:55'!
+!OOStack methodsFor: 'private' stamp: 'gmp 10/14/2022 14:41:07'!
 initialize
 	topNode := Base new.
 	
-	size :=0.! !
+	size := 0.! !
 
 
 !OOStack methodsFor: 'testing' stamp: 'cc 10/11/2022 21:01:10'!
@@ -426,7 +418,7 @@ top
 OOStack class
 	instanceVariableNames: ''!
 
-!OOStack class methodsFor: 'error descriptions' stamp: 'cc 10/11/2022 21:37:58'!
+!OOStack class methodsFor: 'error description' stamp: 'cc 10/11/2022 21:37:58'!
 stackEmptyErrorDescription
 	^ 'Stack is empty'! !
 
@@ -446,7 +438,7 @@ push: AnElement
 	size  := size + 1.! !
 
 
-!LimitedStack methodsFor: 'initialization' stamp: 'cc 10/14/2022 08:56:02'!
+!LimitedStack methodsFor: 'private' stamp: 'cc 10/14/2022 08:56:02'!
 initializeWithLimit: limitedSize
 	maxSize := limitedSize.! !
 
@@ -455,6 +447,11 @@ initializeWithLimit: limitedSize
 !classDefinition: 'LimitedStack class' category: 'Stack-Exercise'!
 LimitedStack class
 	instanceVariableNames: ''!
+
+!LimitedStack class methodsFor: 'creation' stamp: 'gmp 10/14/2022 14:37:25'!
+newWithLimit: aSize
+	^self new initializeWithLimit: aSize! !
+
 
 !LimitedStack class methodsFor: 'error description' stamp: 'cc 10/14/2022 09:02:22'!
 MaxSizeReachedErrorDescription
@@ -481,7 +478,13 @@ Object subclass: #SentenceFinderByPrefix
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!SentenceFinderByPrefix methodsFor: 'as yet unclassified' stamp: 'cc 10/14/2022 11:47:18'!
+!SentenceFinderByPrefix methodsFor: 'private' stamp: 'cc 10/13/2022 19:55:43'!
+setStack: aStack
+
+	stack := aStack.! !
+
+
+!SentenceFinderByPrefix methodsFor: 'operations' stamp: 'cc 10/14/2022 11:47:18'!
 find: aPrefix 
 	| resultList stackInverted |
 	
@@ -501,18 +504,13 @@ find: aPrefix
 
 	^resultList.! !
 
-!SentenceFinderByPrefix methodsFor: 'as yet unclassified' stamp: 'cc 10/13/2022 19:55:43'!
-setStack: aStack
-
-	stack := aStack.! !
-
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
 !classDefinition: 'SentenceFinderByPrefix class' category: 'Stack-Exercise'!
 SentenceFinderByPrefix class
 	instanceVariableNames: ''!
 
-!SentenceFinderByPrefix class methodsFor: 'as yet unclassified' stamp: 'cc 10/13/2022 19:55:53'!
+!SentenceFinderByPrefix class methodsFor: 'creation' stamp: 'cc 10/13/2022 19:55:53'!
 newWith: aStack
 
 	^self new setStack: aStack.! !
@@ -525,7 +523,7 @@ Object subclass: #StackNode
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!StackNode methodsFor: 'as yet unclassified' stamp: 'cc 10/11/2022 20:52:11'!
+!StackNode methodsFor: 'accessing' stamp: 'cc 10/11/2022 20:52:11'!
 nodeValue
 	^ self subclassResponsibility.! !
 
@@ -568,6 +566,6 @@ previousNode
 Element class
 	instanceVariableNames: ''!
 
-!Element class methodsFor: 'as yet unclassified' stamp: 'cc 10/11/2022 21:06:56'!
+!Element class methodsFor: 'creation' stamp: 'cc 10/11/2022 21:06:56'!
 with: someContent after: aReference
 	^Element new initializeWith: someContent after: aReference.! !
