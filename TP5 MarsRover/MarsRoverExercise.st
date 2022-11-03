@@ -38,7 +38,7 @@ test04ARoverThatReciveMoreThanOneCommandDoesAllOfTheActions
 	
 	self assert: (rover isAt: (0@1)).! !
 
-!TestMarsRover methodsFor: 'testing' stamp: 'cc 11/3/2022 18:20:07'!
+!TestMarsRover methodsFor: 'testing' stamp: 'cc 11/3/2022 18:51:37'!
 test05ARoverThatIsFacingNorthAndTurnsRight
 	|rover|
 	rover := MarsRover newAt: (0@0) facing: North new.
@@ -46,7 +46,7 @@ test05ARoverThatIsFacingNorthAndTurnsRight
 	
 	self assert: (rover isFacingEast).! !
 
-!TestMarsRover methodsFor: 'testing' stamp: 'cc 11/3/2022 18:20:31'!
+!TestMarsRover methodsFor: 'testing' stamp: 'cc 11/3/2022 18:51:43'!
 test06ARoverThatIsFacingNorthAndTurnsLeft
 	|rover|
 	rover := MarsRover newAt: (0@0) facing: North new.
@@ -54,7 +54,7 @@ test06ARoverThatIsFacingNorthAndTurnsLeft
 	
 	self deny: (rover isFacingEast).! !
 
-!TestMarsRover methodsFor: 'testing' stamp: 'cc 11/3/2022 18:20:45'!
+!TestMarsRover methodsFor: 'testing' stamp: 'cc 11/3/2022 18:50:30'!
 test07ARoverThatIsFacingWestAndTurnsLeft
 	|rover|
 	rover := MarsRover newAt: (0@0) facing: West new.
@@ -62,7 +62,7 @@ test07ARoverThatIsFacingWestAndTurnsLeft
 	
 	self assert: (rover isFacingSouth).! !
 
-!TestMarsRover methodsFor: 'testing' stamp: 'cc 11/3/2022 18:20:59'!
+!TestMarsRover methodsFor: 'testing' stamp: 'cc 11/3/2022 18:51:49'!
 test08ARoverThatIsFacingSouthAndTurnsLeft
 	|rover|
 	rover := MarsRover newAt: (0@0) facing: South new.
@@ -70,7 +70,7 @@ test08ARoverThatIsFacingSouthAndTurnsLeft
 	
 	self assert: (rover isFacingEast).! !
 
-!TestMarsRover methodsFor: 'testing' stamp: 'cc 11/3/2022 18:21:11'!
+!TestMarsRover methodsFor: 'testing' stamp: 'cc 11/3/2022 18:52:09'!
 test09ARoverThatIsFacingEastAndTurnsLeft
 	|rover|
 	rover := MarsRover newAt: (0@0) facing: East new.
@@ -78,7 +78,7 @@ test09ARoverThatIsFacingEastAndTurnsLeft
 	
 	self assert: (rover isFacingNorth).! !
 
-!TestMarsRover methodsFor: 'testing' stamp: 'cc 11/3/2022 18:21:26'!
+!TestMarsRover methodsFor: 'testing' stamp: 'cc 11/3/2022 18:50:30'!
 test10ARoverThatIsFacingEastAndTurnsRight
 	|rover|
 	rover := MarsRover newAt: (0@0) facing: East new.
@@ -86,7 +86,7 @@ test10ARoverThatIsFacingEastAndTurnsRight
 	
 	self assert: (rover isFacingSouth).! !
 
-!TestMarsRover methodsFor: 'testing' stamp: 'cc 11/3/2022 18:21:57'!
+!TestMarsRover methodsFor: 'testing' stamp: 'cc 11/3/2022 18:52:30'!
 test11ARoverThatIsFacingWestAndTurnsRight
 	|rover|
 	rover := MarsRover newAt: (0@0) facing: West new.
@@ -94,7 +94,7 @@ test11ARoverThatIsFacingWestAndTurnsRight
 	
 	self assert: (rover isFacingNorth).! !
 
-!TestMarsRover methodsFor: 'testing' stamp: 'cc 11/3/2022 18:22:11'!
+!TestMarsRover methodsFor: 'testing' stamp: 'cc 11/3/2022 18:51:09'!
 test12ARoverThatIsFacingSouthAndTurnsRight
 	|rover|
 	rover := MarsRover newAt: (0@0) facing: South new.
@@ -102,7 +102,7 @@ test12ARoverThatIsFacingSouthAndTurnsRight
 	
 	self assert: (rover isFacingWest).! !
 
-!TestMarsRover methodsFor: 'testing' stamp: 'cc 11/3/2022 18:23:22'!
+!TestMarsRover methodsFor: 'testing' stamp: 'cc 11/3/2022 18:52:41'!
 test13ARoverThatIsFacingEastAndTurnsLeftIsNotFacingSouthEastAndWest
 	|rover|
 	rover := MarsRover newAt: (0@0) facing: East new.
@@ -112,7 +112,7 @@ test13ARoverThatIsFacingEastAndTurnsLeftIsNotFacingSouthEastAndWest
 	self deny: (rover isFacingEast).
 	self deny: (rover isFacingWest).! !
 
-!TestMarsRover methodsFor: 'testing' stamp: 'cc 11/3/2022 18:23:38'!
+!TestMarsRover methodsFor: 'testing' stamp: 'cc 11/3/2022 18:52:45'!
 test14ARoverThatIsFacingNorthAndTurnsRightIsNotFacingSouthNorthAndWest
 	|rover|
 	rover := MarsRover newAt: (0@0) facing: North new.
@@ -122,7 +122,7 @@ test14ARoverThatIsFacingNorthAndTurnsRightIsNotFacingSouthNorthAndWest
 	self deny: (rover isFacingNorth).
 	self deny: (rover isFacingWest).! !
 
-!TestMarsRover methodsFor: 'testing' stamp: 'cc 11/3/2022 18:23:51'!
+!TestMarsRover methodsFor: 'testing' stamp: 'cc 11/3/2022 18:52:53'!
 test15ARoverThatIsFacingNorthAndTurnsLeftIsNotFacingSouthEastAndNorth
 	|rover|
 	rover := MarsRover newAt: (0@0) facing: North new.
@@ -132,7 +132,7 @@ test15ARoverThatIsFacingNorthAndTurnsLeftIsNotFacingSouthEastAndNorth
 	self deny: (rover isFacingEast).
 	self deny: (rover isFacingNorth).! !
 
-!TestMarsRover methodsFor: 'testing' stamp: 'cc 11/3/2022 18:24:05'!
+!TestMarsRover methodsFor: 'testing' stamp: 'cc 11/3/2022 18:52:59'!
 test16ARoverThatIsFacingEastAndTurnsRightIsNotFacingWestEastAndNorth
 	|rover|
 	rover := MarsRover newAt: (0@0) facing: East new.
@@ -187,8 +187,9 @@ test21ARoverThatIsFacingEastAndRecivesBCommandMovesWest
 	self assert: (rover isAt: (-1@0)).
 	! !
 
-!TestMarsRover methodsFor: 'testing' stamp: 'cc 11/3/2022 18:07:00'!
-test22
+!TestMarsRover methodsFor: 'testing' stamp: 'cc 11/3/2022 18:55:06'!
+test22SendingAnUnknownCommandLineDoesNothing
+
 	|rover|
 	rover := MarsRover newAt: (0@0) facing: East new.
 	
@@ -198,13 +199,13 @@ test22
 	
 		! !
 
-!TestMarsRover methodsFor: 'testing' stamp: 'cc 11/3/2022 18:08:20'!
-test23Ultimo
+!TestMarsRover methodsFor: 'testing' stamp: 'cc 11/3/2022 19:17:58'!
+test23SendingAnUnknownSymbolJustExecuteThePreviousCommandsNotTheRestOfThem
  
 	|rover|
 	rover := MarsRover newAt: (0@0) facing: East new.
 
-	self should: [rover runCommand: 'fñf'] raise: Error.
+	self should: [rover runCommand: 'fmf'] raise: Error.
 
 	self assert: (rover isAt: (1@0)). 
 	self deny: (rover isAt: (2@0)).
@@ -218,33 +219,38 @@ Object subclass: #CardinalPoints
 	poolDictionaries: ''
 	category: 'MarsRoverExercise'!
 
-!CardinalPoints methodsFor: 'actions' stamp: 'cc 11/2/2022 15:23:09'!
+!CardinalPoints methodsFor: 'directions' stamp: 'cc 11/3/2022 19:03:14'!
+backwardDirection
+	self subclassResponsibility ! !
+
+!CardinalPoints methodsFor: 'directions' stamp: 'cc 11/3/2022 19:03:01'!
+forwardDirection
+	self subclassResponsibility ! !
+
+
+!CardinalPoints methodsFor: 'rotation' stamp: 'cc 11/2/2022 15:23:09'!
 leftShift
 	self subclassResponsibility ! !
 
-!CardinalPoints methodsFor: 'actions' stamp: 'cc 11/2/2022 15:34:42'!
+!CardinalPoints methodsFor: 'rotation' stamp: 'cc 11/2/2022 15:34:42'!
 rightShift
 	self subclassResponsibility ! !
 
-!CardinalPoints methodsFor: 'actions' stamp: 'cc 11/2/2022 16:12:37'!
-whereToMoveForward
+
+!CardinalPoints methodsFor: 'testing' stamp: 'cc 11/3/2022 18:48:33'!
+isEast
 	self subclassResponsibility ! !
 
-
-!CardinalPoints methodsFor: 'testing' stamp: 'cc 11/2/2022 15:51:24'!
-isFacingEast
+!CardinalPoints methodsFor: 'testing' stamp: 'cc 11/3/2022 18:48:45'!
+isNorth
 	self subclassResponsibility ! !
 
-!CardinalPoints methodsFor: 'testing' stamp: 'cc 11/2/2022 15:51:37'!
-isFacingNorth
+!CardinalPoints methodsFor: 'testing' stamp: 'cc 11/3/2022 18:49:13'!
+isSouth
 	self subclassResponsibility ! !
 
-!CardinalPoints methodsFor: 'testing' stamp: 'cc 11/2/2022 15:51:42'!
-isFacingSouth
-	self subclassResponsibility ! !
-
-!CardinalPoints methodsFor: 'testing' stamp: 'cc 11/2/2022 15:51:47'!
-isFacingWest
+!CardinalPoints methodsFor: 'testing' stamp: 'cc 11/3/2022 18:49:00'!
+isWest
 	self subclassResponsibility ! !
 
 
@@ -255,37 +261,38 @@ CardinalPoints subclass: #East
 	poolDictionaries: ''
 	category: 'MarsRoverExercise'!
 
-!East methodsFor: 'testing' stamp: 'cc 11/2/2022 15:28:38'!
-isFacingEast
+!East methodsFor: 'testing' stamp: 'cc 11/3/2022 18:48:34'!
+isEast
 	^true.! !
 
-!East methodsFor: 'testing' stamp: 'cc 11/2/2022 15:54:58'!
-isFacingNorth
+!East methodsFor: 'testing' stamp: 'cc 11/3/2022 18:48:45'!
+isNorth
 	^false.! !
 
-!East methodsFor: 'testing' stamp: 'cc 11/2/2022 15:54:47'!
-isFacingSouth
+!East methodsFor: 'testing' stamp: 'cc 11/3/2022 18:49:13'!
+isSouth
 	^false.! !
 
-!East methodsFor: 'testing' stamp: 'cc 11/2/2022 15:56:43'!
-isFacingWest
+!East methodsFor: 'testing' stamp: 'cc 11/3/2022 18:49:00'!
+isWest
 	^false.! !
 
 
-!East methodsFor: 'actions' stamp: 'cc 11/2/2022 15:30:58'!
+!East methodsFor: 'rotation' stamp: 'cc 11/2/2022 15:30:58'!
 leftShift
 	^ North new.! !
 
-!East methodsFor: 'actions' stamp: 'cc 11/2/2022 15:38:16'!
+!East methodsFor: 'rotation' stamp: 'cc 11/2/2022 15:38:16'!
 rightShift
 	^ South new.! !
 
-!East methodsFor: 'actions' stamp: 'cc 11/2/2022 16:17:39'!
-whereToMoveBackward
-	^(-1@0) ! !
 
-!East methodsFor: 'actions' stamp: 'cc 11/2/2022 16:12:31'!
-whereToMoveForward
+!East methodsFor: 'directions' stamp: 'cc 11/3/2022 19:04:00'!
+backwardDirection
+	^self forwardDirection negated ! !
+
+!East methodsFor: 'directions' stamp: 'cc 11/3/2022 19:03:01'!
+forwardDirection
 	^(1@0) ! !
 
 
@@ -296,37 +303,38 @@ CardinalPoints subclass: #North
 	poolDictionaries: ''
 	category: 'MarsRoverExercise'!
 
-!North methodsFor: 'testing' stamp: 'cc 11/2/2022 15:31:17'!
-isFacingEast
+!North methodsFor: 'testing' stamp: 'cc 11/3/2022 18:48:34'!
+isEast
 	^false.! !
 
-!North methodsFor: 'testing' stamp: 'cc 11/2/2022 15:27:39'!
-isFacingNorth
+!North methodsFor: 'testing' stamp: 'cc 11/3/2022 18:48:45'!
+isNorth
 	^true.! !
 
-!North methodsFor: 'testing' stamp: 'cc 11/2/2022 15:57:24'!
-isFacingSouth
+!North methodsFor: 'testing' stamp: 'cc 11/3/2022 18:49:13'!
+isSouth
 	^false.! !
 
-!North methodsFor: 'testing' stamp: 'cc 11/2/2022 15:57:20'!
-isFacingWest
+!North methodsFor: 'testing' stamp: 'cc 11/3/2022 18:49:00'!
+isWest
 	^false.! !
 
 
-!North methodsFor: 'actions' stamp: 'cc 11/2/2022 15:30:53'!
+!North methodsFor: 'rotation' stamp: 'cc 11/2/2022 15:30:53'!
 leftShift
 	^ West new.! !
 
-!North methodsFor: 'actions' stamp: 'cc 11/2/2022 15:36:41'!
+!North methodsFor: 'rotation' stamp: 'cc 11/2/2022 15:36:41'!
 rightShift
 	^ East new.! !
 
-!North methodsFor: 'actions' stamp: 'cc 11/2/2022 16:16:22'!
-whereToMoveBackward
-	^(0@-1) ! !
 
-!North methodsFor: 'actions' stamp: 'cc 11/2/2022 16:14:15'!
-whereToMoveForward
+!North methodsFor: 'directions' stamp: 'cc 11/3/2022 19:04:04'!
+backwardDirection
+	^self forwardDirection negated ! !
+
+!North methodsFor: 'directions' stamp: 'cc 11/3/2022 19:03:01'!
+forwardDirection
 	^(0@1) ! !
 
 
@@ -337,38 +345,39 @@ CardinalPoints subclass: #South
 	poolDictionaries: ''
 	category: 'MarsRoverExercise'!
 
-!South methodsFor: 'testing' stamp: 'cc 11/2/2022 15:59:42'!
-isFacingEast
+!South methodsFor: 'testing' stamp: 'cc 11/3/2022 18:48:34'!
+isEast
 	^ false.! !
 
-!South methodsFor: 'testing' stamp: 'cc 11/2/2022 15:59:48'!
-isFacingNorth
+!South methodsFor: 'testing' stamp: 'cc 11/3/2022 18:48:45'!
+isNorth
 	^ false.! !
 
-!South methodsFor: 'testing' stamp: 'cc 11/2/2022 15:32:36'!
-isFacingSouth
+!South methodsFor: 'testing' stamp: 'cc 11/3/2022 18:49:13'!
+isSouth
 	^ true.! !
 
-!South methodsFor: 'testing' stamp: 'cc 11/2/2022 15:59:38'!
-isFacingWest
+!South methodsFor: 'testing' stamp: 'cc 11/3/2022 18:49:00'!
+isWest
 	^ false.! !
 
 
-!South methodsFor: 'actions' stamp: 'cc 11/2/2022 15:30:50'!
+!South methodsFor: 'directions' stamp: 'cc 11/3/2022 19:03:51'!
+backwardDirection
+	^self forwardDirection negated ! !
+
+!South methodsFor: 'directions' stamp: 'cc 11/3/2022 19:03:01'!
+forwardDirection
+	^(0@-1) ! !
+
+
+!South methodsFor: 'rotation' stamp: 'cc 11/2/2022 15:30:50'!
 leftShift
 	^ East new.! !
 
-!South methodsFor: 'actions' stamp: 'cc 11/2/2022 15:40:54'!
+!South methodsFor: 'rotation' stamp: 'cc 11/2/2022 15:40:54'!
 rightShift
 	^ West new.! !
-
-!South methodsFor: 'actions' stamp: 'cc 11/2/2022 16:15:35'!
-whereToMoveBackward
-	^(0@1) ! !
-
-!South methodsFor: 'actions' stamp: 'cc 11/2/2022 16:15:03'!
-whereToMoveForward
-	^(0@-1) ! !
 
 
 !classDefinition: #West category: 'MarsRoverExercise'!
@@ -378,38 +387,39 @@ CardinalPoints subclass: #West
 	poolDictionaries: ''
 	category: 'MarsRoverExercise'!
 
-!West methodsFor: 'testing' stamp: 'cc 11/2/2022 15:31:43'!
-isFacingEast
+!West methodsFor: 'testing' stamp: 'cc 11/3/2022 18:48:34'!
+isEast
 	^false.! !
 
-!West methodsFor: 'testing' stamp: 'cc 11/2/2022 15:55:52'!
-isFacingNorth
+!West methodsFor: 'testing' stamp: 'cc 11/3/2022 18:48:45'!
+isNorth
 	^false.! !
 
-!West methodsFor: 'testing' stamp: 'cc 11/2/2022 15:55:57'!
-isFacingSouth
+!West methodsFor: 'testing' stamp: 'cc 11/3/2022 18:49:13'!
+isSouth
 	^false.! !
 
-!West methodsFor: 'testing' stamp: 'cc 11/2/2022 15:39:57'!
-isFacingWest
+!West methodsFor: 'testing' stamp: 'cc 11/3/2022 18:49:00'!
+isWest
 	^true.! !
 
 
-!West methodsFor: 'actions' stamp: 'cc 11/2/2022 15:30:46'!
+!West methodsFor: 'directions' stamp: 'cc 11/3/2022 19:04:11'!
+backwardDirection
+	^self forwardDirection negated ! !
+
+!West methodsFor: 'directions' stamp: 'cc 11/3/2022 19:03:01'!
+forwardDirection
+	^(-1@0) ! !
+
+
+!West methodsFor: 'rotation' stamp: 'cc 11/2/2022 15:30:46'!
 leftShift
 	^ South new.! !
 
-!West methodsFor: 'actions' stamp: 'cc 11/2/2022 15:38:54'!
+!West methodsFor: 'rotation' stamp: 'cc 11/2/2022 15:38:54'!
 rightShift
 	^ North new.! !
-
-!West methodsFor: 'actions' stamp: 'cc 11/2/2022 16:17:07'!
-whereToMoveBackward
-	^(1@0) ! !
-
-!West methodsFor: 'actions' stamp: 'cc 11/2/2022 16:13:33'!
-whereToMoveForward
-	^(-1@0) ! !
 
 
 !classDefinition: #MarsRover category: 'MarsRoverExercise'!
@@ -429,34 +439,34 @@ initializeAt: aPosition facing: aCardinalPoint
 isAt: aPosition
 	^(position = aPosition).! !
 
-!MarsRover methodsFor: 'testing' stamp: 'cc 11/2/2022 15:29:04'!
+!MarsRover methodsFor: 'testing' stamp: 'cc 11/3/2022 18:49:30'!
 isFacingEast
-	^ cardinalPoint isFacingEast.! !
+	^ cardinalPoint isEast.! !
 
-!MarsRover methodsFor: 'testing' stamp: 'cc 11/2/2022 15:29:22'!
+!MarsRover methodsFor: 'testing' stamp: 'cc 11/3/2022 18:50:04'!
 isFacingNorth
-	^ cardinalPoint isFacingNorth.! !
+	^ cardinalPoint isNorth.! !
 
-!MarsRover methodsFor: 'testing' stamp: 'cc 11/2/2022 15:32:27'!
+!MarsRover methodsFor: 'testing' stamp: 'cc 11/3/2022 18:50:30'!
 isFacingSouth
-	^ cardinalPoint isFacingSouth.! !
+	^ cardinalPoint isSouth.! !
 
-!MarsRover methodsFor: 'testing' stamp: 'cc 11/2/2022 15:39:42'!
+!MarsRover methodsFor: 'testing' stamp: 'cc 11/3/2022 18:51:09'!
 isFacingWest
-	^ cardinalPoint isFacingWest.! !
+	^ cardinalPoint isWest.! !
 
 !MarsRover methodsFor: 'testing' stamp: 'cc 11/2/2022 15:08:09'!
 isfacing: aCardinalPoint
 	^(cardinalPoint = aCardinalPoint).! !
 
 
-!MarsRover methodsFor: 'dd - utilization' stamp: 'cc 11/2/2022 16:47:52'!
+!MarsRover methodsFor: 'dd - utilization' stamp: 'cc 11/3/2022 19:02:41'!
 moveBackward
-	position := position + (cardinalPoint whereToMoveBackward)! !
+	position := position + (cardinalPoint backwardDirection)! !
 
-!MarsRover methodsFor: 'dd - utilization' stamp: 'cc 11/2/2022 16:48:37'!
+!MarsRover methodsFor: 'dd - utilization' stamp: 'cc 11/3/2022 19:03:01'!
 moveForward
-	position := position + (cardinalPoint whereToMoveForward)! !
+	position := position + (cardinalPoint forwardDirection)! !
 
 !MarsRover methodsFor: 'dd - utilization' stamp: 'cc 11/2/2022 16:49:16'!
 moveLeft
@@ -471,10 +481,10 @@ stopWithError
 	self error: self class ErrorUnknownCommand.! !
 
 
-!MarsRover methodsFor: 'utilization' stamp: 'cc 11/3/2022 18:17:22'!
+!MarsRover methodsFor: 'utilization' stamp: 'cc 11/3/2022 19:00:16'!
 runCommand: command 
 	command do: [:aChar | |aCommand|
-		aCommand := RoverCommand correspondsTo: aChar.
+		aCommand := RoverCommand for: aChar.
 		aCommand executeActionTo: self.
 	]! !
 
@@ -484,13 +494,14 @@ runCommand: command
 MarsRover class
 	instanceVariableNames: ''!
 
-!MarsRover class methodsFor: 'instance creation' stamp: 'cc 11/3/2022 18:05:52'!
-ErrorUnknownCommand
-	^'Comando no valida'! !
-
 !MarsRover class methodsFor: 'instance creation' stamp: 'cc 11/2/2022 14:38:07'!
 newAt: aPosition facing: aCardinalPoint 
 	^self new initializeAt: aPosition facing: aCardinalPoint ! !
+
+
+!MarsRover class methodsFor: 'error messages' stamp: 'cc 11/3/2022 18:05:52'!
+ErrorUnknownCommand
+	^'Comando no valida'! !
 
 
 !classDefinition: #RoverCommand category: 'MarsRoverExercise'!
@@ -506,8 +517,8 @@ Object subclass: #RoverCommand
 RoverCommand class
 	instanceVariableNames: ''!
 
-!RoverCommand class methodsFor: 'as yet unclassified' stamp: 'cc 11/3/2022 18:17:22'!
-correspondsTo: aSymbol
+!RoverCommand class methodsFor: 'private' stamp: 'cc 11/3/2022 19:00:15'!
+for: aSymbol
 
 	|commandType|
 
@@ -515,13 +526,14 @@ correspondsTo: aSymbol
 	
 	^commandType ! !
 
-!RoverCommand class methodsFor: 'as yet unclassified' stamp: 'cc 11/2/2022 16:46:57'!
-executeActionTo: aRover
-	self subclassResponsibility ! !
-
-!RoverCommand class methodsFor: 'as yet unclassified' stamp: 'cc 11/3/2022 18:02:58'!
+!RoverCommand class methodsFor: 'private' stamp: 'cc 11/3/2022 18:02:58'!
 isFor: aCommand 
 	^false.! !
+
+
+!RoverCommand class methodsFor: 'dd - utilization' stamp: 'cc 11/2/2022 16:46:57'!
+executeActionTo: aRover
+	self subclassResponsibility ! !
 
 
 !classDefinition: #BackwardCommand category: 'MarsRoverExercise'!
@@ -537,11 +549,12 @@ RoverCommand subclass: #BackwardCommand
 BackwardCommand class
 	instanceVariableNames: ''!
 
-!BackwardCommand class methodsFor: 'as yet unclassified' stamp: 'cc 11/2/2022 16:47:19'!
+!BackwardCommand class methodsFor: 'dd - utilization' stamp: 'cc 11/2/2022 16:47:19'!
 executeActionTo: aRover
 	aRover moveBackward! !
 
-!BackwardCommand class methodsFor: 'as yet unclassified' stamp: 'cc 11/2/2022 16:44:33'!
+
+!BackwardCommand class methodsFor: 'private' stamp: 'cc 11/2/2022 16:44:33'!
 isFor: aCommand
 	^(aCommand = $b)! !
 
@@ -559,12 +572,13 @@ RoverCommand subclass: #ForwardCommand
 ForwardCommand class
 	instanceVariableNames: ''!
 
-!ForwardCommand class methodsFor: 'as yet unclassified' stamp: 'cc 11/2/2022 16:48:14'!
+!ForwardCommand class methodsFor: 'dd - utilization' stamp: 'cc 11/2/2022 16:48:14'!
 executeActionTo: aRover
 	aRover moveForward
 	! !
 
-!ForwardCommand class methodsFor: 'as yet unclassified' stamp: 'cc 11/2/2022 16:44:59'!
+
+!ForwardCommand class methodsFor: 'private' stamp: 'cc 11/2/2022 16:44:59'!
 isFor: aCommand
 	^(aCommand = $f)
 	! !
@@ -583,11 +597,12 @@ RoverCommand subclass: #LeftCommand
 LeftCommand class
 	instanceVariableNames: ''!
 
-!LeftCommand class methodsFor: 'as yet unclassified' stamp: 'cc 11/2/2022 16:48:55'!
+!LeftCommand class methodsFor: 'dd - utilization' stamp: 'cc 11/2/2022 16:48:55'!
 executeActionTo: aRover
 	aRover moveLeft! !
 
-!LeftCommand class methodsFor: 'as yet unclassified' stamp: 'cc 11/2/2022 16:45:08'!
+
+!LeftCommand class methodsFor: 'private' stamp: 'cc 11/2/2022 16:45:08'!
 isFor: aCommand
 	^(aCommand = $l)! !
 
@@ -605,11 +620,12 @@ RoverCommand subclass: #RightCommand
 RightCommand class
 	instanceVariableNames: ''!
 
-!RightCommand class methodsFor: 'as yet unclassified' stamp: 'cc 11/2/2022 16:49:46'!
+!RightCommand class methodsFor: 'dd - utilization' stamp: 'cc 11/2/2022 16:49:46'!
 executeActionTo: aRover
 	aRover moveRight! !
 
-!RightCommand class methodsFor: 'as yet unclassified' stamp: 'cc 11/2/2022 16:45:25'!
+
+!RightCommand class methodsFor: 'private' stamp: 'cc 11/2/2022 16:45:25'!
 isFor: aCommand
 	^(aCommand = $r)! !
 
@@ -627,10 +643,11 @@ RoverCommand subclass: #UnknownCommand
 UnknownCommand class
 	instanceVariableNames: ''!
 
-!UnknownCommand class methodsFor: 'as yet unclassified' stamp: 'cc 11/3/2022 18:04:46'!
-executeActionTo: aRover
-	aRover stopWithError.! !
-
 !UnknownCommand class methodsFor: 'as yet unclassified' stamp: 'cc 11/2/2022 16:45:46'!
 ifFor: aCommand
 	^false.! !
+
+
+!UnknownCommand class methodsFor: 'dd - utilization' stamp: 'cc 11/3/2022 18:04:46'!
+executeActionTo: aRover
+	aRover stopWithError.! !
