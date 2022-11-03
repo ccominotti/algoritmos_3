@@ -212,50 +212,50 @@ test23SendingAnUnknownSymbolJustExecuteThePreviousCommandsNotTheRestOfThem
 		! !
 
 
-!classDefinition: #CardinalPoints category: 'MarsRoverExercise'!
-Object subclass: #CardinalPoints
+!classDefinition: #CardinalPoint category: 'MarsRoverExercise'!
+Object subclass: #CardinalPoint
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'MarsRoverExercise'!
 
-!CardinalPoints methodsFor: 'directions' stamp: 'cc 11/3/2022 19:03:14'!
+!CardinalPoint methodsFor: 'directions' stamp: 'cc 11/3/2022 19:03:14'!
 backwardDirection
 	self subclassResponsibility ! !
 
-!CardinalPoints methodsFor: 'directions' stamp: 'cc 11/3/2022 19:03:01'!
+!CardinalPoint methodsFor: 'directions' stamp: 'cc 11/3/2022 19:03:01'!
 forwardDirection
 	self subclassResponsibility ! !
 
 
-!CardinalPoints methodsFor: 'rotation' stamp: 'cc 11/2/2022 15:23:09'!
+!CardinalPoint methodsFor: 'rotation' stamp: 'cc 11/2/2022 15:23:09'!
 leftShift
 	self subclassResponsibility ! !
 
-!CardinalPoints methodsFor: 'rotation' stamp: 'cc 11/2/2022 15:34:42'!
+!CardinalPoint methodsFor: 'rotation' stamp: 'cc 11/2/2022 15:34:42'!
 rightShift
 	self subclassResponsibility ! !
 
 
-!CardinalPoints methodsFor: 'testing' stamp: 'cc 11/3/2022 18:48:33'!
+!CardinalPoint methodsFor: 'testing' stamp: 'cc 11/3/2022 18:48:33'!
 isEast
 	self subclassResponsibility ! !
 
-!CardinalPoints methodsFor: 'testing' stamp: 'cc 11/3/2022 18:48:45'!
+!CardinalPoint methodsFor: 'testing' stamp: 'cc 11/3/2022 18:48:45'!
 isNorth
 	self subclassResponsibility ! !
 
-!CardinalPoints methodsFor: 'testing' stamp: 'cc 11/3/2022 18:49:13'!
+!CardinalPoint methodsFor: 'testing' stamp: 'cc 11/3/2022 18:49:13'!
 isSouth
 	self subclassResponsibility ! !
 
-!CardinalPoints methodsFor: 'testing' stamp: 'cc 11/3/2022 18:49:00'!
+!CardinalPoint methodsFor: 'testing' stamp: 'cc 11/3/2022 18:49:00'!
 isWest
 	self subclassResponsibility ! !
 
 
 !classDefinition: #East category: 'MarsRoverExercise'!
-CardinalPoints subclass: #East
+CardinalPoint subclass: #East
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -297,7 +297,7 @@ forwardDirection
 
 
 !classDefinition: #North category: 'MarsRoverExercise'!
-CardinalPoints subclass: #North
+CardinalPoint subclass: #North
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -339,7 +339,7 @@ forwardDirection
 
 
 !classDefinition: #South category: 'MarsRoverExercise'!
-CardinalPoints subclass: #South
+CardinalPoint subclass: #South
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -381,7 +381,7 @@ rightShift
 
 
 !classDefinition: #West category: 'MarsRoverExercise'!
-CardinalPoints subclass: #West
+CardinalPoint subclass: #West
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -454,10 +454,6 @@ isFacingSouth
 !MarsRover methodsFor: 'testing' stamp: 'cc 11/3/2022 18:51:09'!
 isFacingWest
 	^ cardinalPoint isWest.! !
-
-!MarsRover methodsFor: 'testing' stamp: 'cc 11/2/2022 15:08:09'!
-isfacing: aCardinalPoint
-	^(cardinalPoint = aCardinalPoint).! !
 
 
 !MarsRover methodsFor: 'dd - utilization' stamp: 'cc 11/3/2022 19:02:41'!
