@@ -89,6 +89,41 @@ test07AccountKnowsItsTransactions
 ! !
 
 
+!classDefinition: #TransferencesTest category: 'ServiciosFinancieros-Ejercicio'!
+TestCase subclass: #TransferencesTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'ServiciosFinancieros-Ejercicio'!
+
+!TransferencesTest methodsFor: 'as yet unclassified' stamp: 'gmor 11/4/2022 20:16:37'!
+test01
+
+	|origen destino|
+	
+	origen := ReceptiveAccount new.
+	destino := ReceptiveAccount new.
+	
+	origen tranfer: (100 * peso) to: destino.
+	
+	self assert: (-100 * peso) equals: origen balance.
+	self assert: (100 * peso) equals: destino balance.! !
+
+!TransferencesTest methodsFor: 'as yet unclassified' stamp: 'gmor 11/4/2022 20:15:57'!
+test02
+
+	|origen destino|
+	
+	origen := ReceptiveAccount new.
+	destino := ReceptiveAccount new.
+	
+	self should: [origen tranfer: (-100 * peso) to: destino]
+	raise: Error.
+	
+	self assert: (0 * peso) equals: origen balance.
+	self assert: (0 * peso) equals: destino balance.! !
+
+
 !classDefinition: #AccountTransaction category: 'ServiciosFinancieros-Ejercicio'!
 Object subclass: #AccountTransaction
 	instanceVariableNames: ''
@@ -99,6 +134,10 @@ Object subclass: #AccountTransaction
 !AccountTransaction methodsFor: 'value' stamp: 'HernanWilkinson 9/12/2011 12:25'!
 value 
 
+	self subclassResponsibility ! !
+
+!AccountTransaction methodsFor: 'value' stamp: 'gmor 11/4/2022 19:30:18'!
+valueForBalance
 	self subclassResponsibility ! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
@@ -136,6 +175,10 @@ value
 
 	^ value! !
 
+!Deposit methodsFor: 'value' stamp: 'gmor 11/4/2022 19:30:01'!
+valueForBalance
+	^self value! !
+
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
 !classDefinition: 'Deposit class' category: 'ServiciosFinancieros-Ejercicio'!
@@ -166,6 +209,10 @@ value
 
 	^ value! !
 
+!Withdraw methodsFor: 'value' stamp: 'gmor 11/4/2022 19:30:48'!
+valueForBalance
+	^self value negated! !
+
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
 !classDefinition: 'Withdraw class' category: 'ServiciosFinancieros-Ejercicio'!
@@ -191,10 +238,9 @@ initialize
 	transactions := OrderedCollection new.! !
 
 
-!ReceptiveAccount methodsFor: 'main protocol' stamp: 'HAW 5/23/2019 15:19:32'!
+!ReceptiveAccount methodsFor: 'main protocol' stamp: 'gmor 11/4/2022 19:39:04'!
 balance
-
-	^transactions sum: [ :aTransaction | aTransaction value ] ifEmpty: [ 0 ]! !
+	^transactions sum: [ :aTransaction | aTransaction valueForBalance ] ifEmpty: [ 0 ]! !
 
 !ReceptiveAccount methodsFor: 'main protocol' stamp: 'NR 10/17/2019 03:28:43'!
 hasRegistered: aTransaction
@@ -208,7 +254,24 @@ register: aTransaction
 	transactions add: aTransaction 
 ! !
 
+!ReceptiveAccount methodsFor: 'main protocol' stamp: 'gmor 11/4/2022 20:14:43'!
+tranfer: aValue to: aReceptiveAccount
+	(aValue > (0 * peso)) ifFalse: [^self error: self class invalidAmountErrorMessage].
+	Deposit register: aValue on: aReceptiveAccount.
+	Withdraw register: aValue on: self.
+	! !
+
 !ReceptiveAccount methodsFor: 'main protocol' stamp: 'HernanWilkinson 7/13/2011 18:37'!
 transactions 
 
 	^ transactions copy! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'ReceptiveAccount class' category: 'ServiciosFinancieros-Ejercicio'!
+ReceptiveAccount class
+	instanceVariableNames: ''!
+
+!ReceptiveAccount class methodsFor: 'as yet unclassified' stamp: 'gmor 11/4/2022 20:13:54'!
+invalidAmountErrorMessage
+	^'La cantidad a transferir ingresada es inválida'! !
