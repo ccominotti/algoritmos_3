@@ -96,7 +96,7 @@ TestCase subclass: #TransferencesTest
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Ejercicio'!
 
-!TransferencesTest methodsFor: 'as yet unclassified' stamp: 'gmor 11/4/2022 20:16:37'!
+!TransferencesTest methodsFor: 'as yet unclassified' stamp: 'cc 11/6/2022 20:49:00'!
 test01
 
 	|origen destino|
@@ -104,12 +104,12 @@ test01
 	origen := ReceptiveAccount new.
 	destino := ReceptiveAccount new.
 	
-	origen tranfer: (100 * peso) to: destino.
+	Transfer register: (100 * peso) from: origen to: destino.
 	
 	self assert: (-100 * peso) equals: origen balance.
 	self assert: (100 * peso) equals: destino balance.! !
 
-!TransferencesTest methodsFor: 'as yet unclassified' stamp: 'gmor 11/4/2022 20:15:57'!
+!TransferencesTest methodsFor: 'as yet unclassified' stamp: 'cc 11/6/2022 20:52:40'!
 test02
 
 	|origen destino|
@@ -117,11 +117,40 @@ test02
 	origen := ReceptiveAccount new.
 	destino := ReceptiveAccount new.
 	
-	self should: [origen tranfer: (-100 * peso) to: destino]
-	raise: Error.
+	self should: [	Transfer register: (-100 * peso) from: origen to: destino]
+	raise: Error description: (Transfer invalidAmountErrorMessage).
 	
 	self assert: (0 * peso) equals: origen balance.
 	self assert: (0 * peso) equals: destino balance.! !
+
+!TransferencesTest methodsFor: 'as yet unclassified' stamp: 'cc 11/6/2022 20:49:47'!
+test03
+
+	|origen destino transferencia|
+	
+	origen := ReceptiveAccount new.
+	destino := ReceptiveAccount new.
+	
+	transferencia := 	Transfer register: (100 * peso) from: origen to: destino.
+
+	
+	self assert: (-100 * peso) equals: origen balance.
+	self assert: (100 * peso) equals: destino balance.
+	self assert: (transferencia value) equals: (100 * peso).
+	! !
+
+!TransferencesTest methodsFor: 'as yet unclassified' stamp: 'cc 11/6/2022 20:49:56'!
+test04
+
+	|origen destino transferencia|
+	
+	origen := ReceptiveAccount new.
+	destino := ReceptiveAccount new.
+	
+	transferencia := 	Transfer register: (100 * peso) from: origen to: destino.
+	
+	self assert: (destino hasRegistered: (transferencia deposit)).	
+	self assert: (origen hasRegistered: (transferencia withdraw)).	! !
 
 
 !classDefinition: #AccountTransaction category: 'ServiciosFinancieros-Ejercicio'!
@@ -254,24 +283,53 @@ register: aTransaction
 	transactions add: aTransaction 
 ! !
 
-!ReceptiveAccount methodsFor: 'main protocol' stamp: 'gmor 11/4/2022 20:14:43'!
-tranfer: aValue to: aReceptiveAccount
-	(aValue > (0 * peso)) ifFalse: [^self error: self class invalidAmountErrorMessage].
-	Deposit register: aValue on: aReceptiveAccount.
-	Withdraw register: aValue on: self.
+!ReceptiveAccount methodsFor: 'main protocol' stamp: 'cc 11/6/2022 20:47:53'!
+transactions 
+	^ transactions copy! !
+
+
+!classDefinition: #Transfer category: 'ServiciosFinancieros-Ejercicio'!
+Object subclass: #Transfer
+	instanceVariableNames: 'deposit withdraw value'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'ServiciosFinancieros-Ejercicio'!
+
+!Transfer methodsFor: 'as yet unclassified' stamp: 'cc 11/6/2022 20:04:18'!
+deposit
+	^deposit
 	! !
 
-!ReceptiveAccount methodsFor: 'main protocol' stamp: 'HernanWilkinson 7/13/2011 18:37'!
-transactions 
+!Transfer methodsFor: 'as yet unclassified' stamp: 'cc 11/6/2022 20:42:42'!
+initializeFor: aValue withdraw: aWithdraw deposit: aDeposit
+	value := aValue.
+	deposit := aDeposit.
+	withdraw := aWithdraw.! !
 
-	^ transactions copy! !
+!Transfer methodsFor: 'as yet unclassified' stamp: 'cc 11/6/2022 19:50:37'!
+value
+	^value
+	! !
+
+!Transfer methodsFor: 'as yet unclassified' stamp: 'cc 11/6/2022 20:05:06'!
+withdraw
+	^withdraw
+	! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'ReceptiveAccount class' category: 'ServiciosFinancieros-Ejercicio'!
-ReceptiveAccount class
+!classDefinition: 'Transfer class' category: 'ServiciosFinancieros-Ejercicio'!
+Transfer class
 	instanceVariableNames: ''!
 
-!ReceptiveAccount class methodsFor: 'as yet unclassified' stamp: 'gmor 11/4/2022 20:13:54'!
+!Transfer class methodsFor: 'as yet unclassified' stamp: 'cc 11/6/2022 20:39:39'!
 invalidAmountErrorMessage
-	^'La cantidad a transferir ingresada es inválida'! !
+	^'La cantidad a transferir es invalida'! !
+
+!Transfer class methodsFor: 'as yet unclassified' stamp: 'cc 11/6/2022 20:47:07'!
+register: aValue from: oringinAccount to: destinationAccount
+	| deposit withdraw|
+	(aValue > (0 * peso)) ifFalse: [^self error: self invalidAmountErrorMessage].
+	deposit := Deposit register: aValue on: destinationAccount.
+	withdraw := Withdraw register: aValue on: oringinAccount.
+	^Transfer new initializeFor: aValue withdraw: withdraw deposit: deposit.! !
