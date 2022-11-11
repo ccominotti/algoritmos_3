@@ -603,6 +603,22 @@ balance
 hasRegistered: aTransaction
 	self subclassResponsibility ! !
 
+!FinancialAsset methodsFor: 'main protocol' stamp: 'cc 11/11/2022 17:14:30'!
+initialize
+	self subclassResponsibility ! !
+
+!FinancialAsset methodsFor: 'main protocol' stamp: 'cc 11/11/2022 17:13:07'!
+is: anAccount 
+	self subclassResponsibility ! !
+
+!FinancialAsset methodsFor: 'main protocol' stamp: 'cc 11/11/2022 17:12:58'!
+isRegister: aPortfolio
+	self subclassResponsibility ! !
+
+!FinancialAsset methodsFor: 'main protocol' stamp: 'cc 11/11/2022 17:13:35'!
+members 
+	self subclassResponsibility ! !
+
 !FinancialAsset methodsFor: 'main protocol' stamp: 'cc 11/9/2022 17:27:28'!
 transactions 
 	self subclassResponsibility ! !
