@@ -141,7 +141,7 @@ test09PortfolioTransactionAreComposedtByTransactionOfTheFinancialAssetsIncluded
 	self assert: (portfolio transactions) equals: (portfolioInterno transactions, account transactions).
 	! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'cc 11/11/2022 13:04:35'!
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'cc 11/11/2022 13:21:29'!
 test10PortfolioCanNotAddAnAccountTwice
 	| portfolio account |
 	
@@ -151,12 +151,14 @@ test10PortfolioCanNotAddAnAccountTwice
 	
 	portfolio addFinancialAsset: account. 
 	
-	self should: [portfolio addFinancialAsset: account] raise: Error.
+	self should: [portfolio addFinancialAsset: account] 
+	raise: Error
+	withExceptionDo: [:anError | self assert: Portfolio CanNotAddAFinancialAssetTwice equals: anError messageText ].
 	
 	self assert: (portfolio transactions) equals: (account transactions).
 	! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'cc 11/11/2022 13:18:28'!
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'cc 11/11/2022 13:21:29'!
 test11PortfolioCanNotAddAnAccountAddedInAnInternalPortfolio
 	| portfolio account portfolioInterno|
 	
@@ -168,12 +170,14 @@ test11PortfolioCanNotAddAnAccountAddedInAnInternalPortfolio
 	portfolioInterno addFinancialAsset: account.
 	portfolio addFinancialAsset: portfolioInterno.
 	
-	self should: [portfolio addFinancialAsset: account] raise: Error.
+	self should: [portfolio addFinancialAsset: account] 
+	raise: Error
+	withExceptionDo: [ :anError | self assert: Portfolio CanNotAddAFinancialAssetTwice equals: anError messageText ].
 	
 	self assert: (portfolio transactions) equals: (account transactions).
 	! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'cc 11/11/2022 13:41:38'!
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'cc 11/11/2022 13:21:29'!
 test12PortfolioCanNotAddAPortfolioThatHasASameAccount
 	| portfolio account portfolioInterno|
 	
@@ -185,11 +189,13 @@ test12PortfolioCanNotAddAPortfolioThatHasASameAccount
 	portfolio addFinancialAsset: account. 
 	portfolioInterno addFinancialAsset: account.
 	
-	self should: [portfolio addFinancialAsset: portfolioInterno] raise: Error.
+	self should: [portfolio addFinancialAsset: portfolioInterno] 
+	raise: Error
+	withExceptionDo: [ :anError | self assert: Portfolio CanNotAddAFinancialAssetTwice equals: anError messageText ]
 	
 	! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'cc 11/11/2022 11:47:12'!
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'cc 11/11/2022 13:21:29'!
 test13PortfolioCanNotAddAnAccountRegisterInAnInternalPortfolio
 	| portfolio account portfolioInterno|
 	
@@ -201,22 +207,9 @@ test13PortfolioCanNotAddAnAccountRegisterInAnInternalPortfolio
 	portfolio addFinancialAsset: account. 
 	portfolio addFinancialAsset: portfolioInterno.
 	
-	self should: [portfolioInterno addFinancialAsset: account] raise: Error.
-	
-	! !
-
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'cc 11/11/2022 12:16:59'!
-test14PortfolioCanAddAnAccountWhenHasFathersWithoutTheSameAccount
-	| portfolio account portfolioInterno |
-	
-	portfolio := Portfolio new.
-	portfolioInterno :=  	Portfolio new.
-	account := ReceptiveAccount  new.
-	Deposit register: 300 * peso on: account.
-	
-	portfolio addFinancialAsset: portfolioInterno.
-	portfolioInterno addFinancialAsset: account.
-	
+	self should: [portfolioInterno addFinancialAsset: account] 
+	raise: Error
+	withExceptionDo: [ :anError | self assert: Portfolio CanNotAddAFinancialAssetTwice equals: anError messageText ]
 	
 	! !
 
@@ -613,12 +606,12 @@ FinancialAsset subclass: #Portfolio
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Ejercicio'!
 
-!Portfolio methodsFor: 'main protocol' stamp: 'cc 11/11/2022 12:40:25'!
+!Portfolio methodsFor: 'main protocol' stamp: 'cc 11/11/2022 13:21:29'!
 addFinancialAsset: aReceptiveAccount 
-	(aReceptiveAccount isRegister: self) ifTrue: [self error: self class CanNotAddAnAccountTwice].
+	(aReceptiveAccount isRegister: self) ifTrue: [self error: self class CanNotAddAFinancialAssetTwice].
 	(fathers isEmpty) ifFalse: [
 		fathers do: [:aFather | (aReceptiveAccount isRegister: aFather) ifTrue: 
-			[self error: self class CanNotAddAnAccountTwice].
+			[self error: self class CanNotAddAFinancialAssetTwice].
 			].
 		].
 	accounts add: aReceptiveAccount.
@@ -636,7 +629,7 @@ hasRegistered: aTransaction
 is: anAccount
 	^((self members) anySatisfy: [:aFinancialAsset  | aFinancialAsset is: anAccount]) or: [self = anAccount]! !
 
-!Portfolio methodsFor: 'main protocol' stamp: 'cc 11/11/2022 11:00:01'!
+!Portfolio methodsFor: 'main protocol' stamp: 'cc 11/11/2022 13:03:01'!
 isRegister: aPortfolio
 	^(aPortfolio members) anySatisfy: [:aFinancialAsset  | (self members) anySatisfy: [:selfMember |  aFinancialAsset = selfMember]]! !
 
@@ -658,7 +651,7 @@ initialize
 addAsFatherIfApply: Portfoliofathers
 	fathers add: Portfoliofathers.! !
 
-!Portfolio methodsFor: 'privated' stamp: 'cc 11/11/2022 12:39:56'!
+!Portfolio methodsFor: 'privated' stamp: 'cc 11/11/2022 12:59:28'!
 members 
 	^accounts! !
 
@@ -668,8 +661,8 @@ members
 Portfolio class
 	instanceVariableNames: ''!
 
-!Portfolio class methodsFor: 'as yet unclassified' stamp: 'cc 11/11/2022 13:05:43'!
-CanNotAddAnAccountTwice
+!Portfolio class methodsFor: 'as yet unclassified' stamp: 'cc 11/11/2022 13:21:29'!
+CanNotAddAFinancialAssetTwice
 	'No se puede agregar dos veces el mismo activo financiero'! !
 
 
