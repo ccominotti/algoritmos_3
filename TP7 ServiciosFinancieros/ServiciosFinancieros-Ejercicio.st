@@ -213,6 +213,23 @@ test13PortfolioCanNotAddAnAccountRegisterInAnInternalPortfolio
 	
 	! !
 
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'cc 11/11/2022 14:15:07'!
+test14PortfolioCanNotBeAddInACloseCicle
+	| portfolio otroPortfolio portfolioInterno|
+	
+	portfolio := Portfolio new.
+	portfolioInterno :=  	Portfolio new.
+	otroPortfolio := 	Portfolio new.
+	
+	portfolio addFinancialAsset: portfolioInterno. 
+	portfolioInterno addFinancialAsset: otroPortfolio.
+	
+	self should: [otroPortfolio addFinancialAsset: portfolio] 
+	raise: Error
+	withExceptionDo: [ :anError | self assert: Portfolio CanNotAddAFinancialAssetTwice equals: anError messageText ]
+	
+	! !
+
 
 !classDefinition: #ReceptiveAccountTest category: 'ServiciosFinancieros-Ejercicio'!
 TestCase subclass: #ReceptiveAccountTest
@@ -480,10 +497,6 @@ contrapart
 	^transfer withdraw! !
 
 
-!TransferDeposit methodsFor: 'operations' stamp: 'cc 11/9/2022 16:35:19'!
-value
-	^value! !
-
 !TransferDeposit methodsFor: 'operations' stamp: 'cc 11/9/2022 17:19:55'!
 valueForBalance: account
 	^account balanceOfDeposit: value.! !
@@ -520,10 +533,6 @@ addTransferSource: aTransfer
 contrapart
 	^transfer deposit! !
 
-
-!TransferWithdraw methodsFor: 'operations' stamp: 'cc 11/9/2022 16:35:27'!
-value
-	^value! !
 
 !TransferWithdraw methodsFor: 'operations' stamp: 'cc 11/9/2022 17:19:18'!
 valueForBalance: account
@@ -606,20 +615,20 @@ FinancialAsset subclass: #Portfolio
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Ejercicio'!
 
-!Portfolio methodsFor: 'main protocol' stamp: 'cc 11/11/2022 13:21:29'!
+!Portfolio methodsFor: 'main protocol' stamp: 'cc 11/11/2022 15:22:00'!
 addFinancialAsset: aReceptiveAccount 
-	(aReceptiveAccount isRegister: self) ifTrue: [self error: self class CanNotAddAFinancialAssetTwice].
-	(fathers isEmpty) ifFalse: [
-		fathers do: [:aFather | (aReceptiveAccount isRegister: aFather) ifTrue: 
-			[self error: self class CanNotAddAFinancialAssetTwice].
-			].
-		].
+	(aReceptiveAccount isRegister: self) ifTrue: [self error: self class CanNotAddAFinancialAssetTwice]. 
+
 	accounts add: aReceptiveAccount.
 	aReceptiveAccount addAsFatherIfApply: self.! !
 
 !Portfolio methodsFor: 'main protocol' stamp: 'cc 11/8/2022 20:37:14'!
 balance
 	^accounts sum: [:anAccount | anAccount balance] ifEmpty: [^0 * peso].! !
+
+!Portfolio methodsFor: 'main protocol' stamp: 'cc 11/11/2022 15:07:43'!
+fatherList
+	^fathers! !
 
 !Portfolio methodsFor: 'main protocol' stamp: 'cc 11/9/2022 17:31:03'!
 hasRegistered: aTransaction 
@@ -629,9 +638,15 @@ hasRegistered: aTransaction
 is: anAccount
 	^((self members) anySatisfy: [:aFinancialAsset  | aFinancialAsset is: anAccount]) or: [self = anAccount]! !
 
-!Portfolio methodsFor: 'main protocol' stamp: 'cc 11/11/2022 13:03:01'!
+!Portfolio methodsFor: 'main protocol' stamp: 'cc 11/11/2022 15:22:07'!
 isRegister: aPortfolio
-	^(aPortfolio members) anySatisfy: [:aFinancialAsset  | (self members) anySatisfy: [:selfMember |  aFinancialAsset = selfMember]]! !
+	(self = aPortfolio ) ifTrue: [^true].
+	((self members) anySatisfy: [:member | (member = aPortfolio) or: [member isRegister: aPortfolio] ]) ifTrue: [^true].
+	((fathers) anySatisfy: [:member | (member = aPortfolio) or: [member isRegister: aPortfolio] ]) ifTrue: [^true].
+	((aPortfolio members) anySatisfy: [:member |  (member = self) ]) ifTrue: [^true].
+	((aPortfolio fatherList) anySatisfy: [:member |  (member = self) ]) ifTrue: [^true].
+	^false
+! !
 
 !Portfolio methodsFor: 'main protocol' stamp: 'cc 11/8/2022 21:22:04'!
 transactions
@@ -641,15 +656,16 @@ transactions
 	^transactions ! !
 
 
-!Portfolio methodsFor: 'initialization' stamp: 'cc 11/11/2022 11:49:51'!
+!Portfolio methodsFor: 'initialization' stamp: 'cc 11/11/2022 14:05:56'!
 initialize
 	accounts := OrderedCollection new.
 	fathers := OrderedCollection new.! !
 
 
-!Portfolio methodsFor: 'privated' stamp: 'cc 11/11/2022 12:27:27'!
+!Portfolio methodsFor: 'privated' stamp: 'cc 11/11/2022 14:07:34'!
 addAsFatherIfApply: Portfoliofathers
-	fathers add: Portfoliofathers.! !
+	fathers add: Portfoliofathers.
+! !
 
 !Portfolio methodsFor: 'privated' stamp: 'cc 11/11/2022 12:59:28'!
 members 
@@ -711,9 +727,9 @@ is: aFinancialAsset
 	^ self = aFinancialAsset
 ! !
 
-!ReceptiveAccount methodsFor: 'main protocol' stamp: 'cc 11/11/2022 13:35:01'!
+!ReceptiveAccount methodsFor: 'main protocol' stamp: 'cc 11/11/2022 15:07:50'!
 isRegister: aPortfolio
-	^(aPortfolio members) anySatisfy: [:aFinancialAsset  | aFinancialAsset is: self] 
+	^((aPortfolio members) anySatisfy: [:aFinancialAsset  | aFinancialAsset is: self] ) or: [(aPortfolio fatherList) anySatisfy: [:aFinancialAsset  | aFinancialAsset is: self] ].
 ! !
 
 !ReceptiveAccount methodsFor: 'main protocol' stamp: 'cc 11/9/2022 16:37:18'!
