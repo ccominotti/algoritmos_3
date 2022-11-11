@@ -5,7 +5,7 @@ TestCase subclass: #PortfolioTest
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Ejercicio'!
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'cc 11/9/2022 17:34:48'!
+!PortfolioTest methodsFor: 'tests' stamp: 'cc 11/9/2022 17:34:48'!
 test01PortfolioHaveZeroAsBalanceWhenCreated
 	| portfolio |
 	
@@ -13,7 +13,7 @@ test01PortfolioHaveZeroAsBalanceWhenCreated
 	 
 	self assert: (portfolio balance) equals: (0 * peso).! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'cc 11/9/2022 18:05:47'!
+!PortfolioTest methodsFor: 'tests' stamp: 'cc 11/9/2022 18:05:47'!
 test02DepositIncreasesBalanceOnPortfolio
 	| portfolio account |
 	
@@ -26,7 +26,7 @@ test02DepositIncreasesBalanceOnPortfolio
 	self assert: (portfolio balance) equals: (account balance).
 	! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'cc 11/9/2022 18:05:47'!
+!PortfolioTest methodsFor: 'tests' stamp: 'cc 11/9/2022 18:05:47'!
 test03PortfolioBalanceIsComposedtByBalanceOfTheAccountsIncluded
 	| portfolio oneAccount otherAccount |
 	
@@ -42,7 +42,7 @@ test03PortfolioBalanceIsComposedtByBalanceOfTheAccountsIncluded
 	self assert: (portfolio balance) equals: ((oneAccount balance)+ (otherAccount balance)).
 	! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'cc 11/9/2022 18:05:47'!
+!PortfolioTest methodsFor: 'tests' stamp: 'cc 11/9/2022 18:05:47'!
 test04PortfolioKnowsRegisteredTransactions
 	| portfolio account deposit |
 	
@@ -56,7 +56,7 @@ test04PortfolioKnowsRegisteredTransactions
 	self assert: (portfolio hasRegistered: deposit).
 	! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'cc 11/9/2022 18:05:47'!
+!PortfolioTest methodsFor: 'tests' stamp: 'cc 11/9/2022 18:05:47'!
 test05PortfolioDoNotKnowNotRegisteredTransactions
 	| portfolio oneAccount otherAccount deposit |
 	
@@ -70,7 +70,7 @@ test05PortfolioDoNotKnowNotRegisteredTransactions
 	self deny: (portfolio hasRegistered: deposit).
 	! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'cc 11/9/2022 18:05:47'!
+!PortfolioTest methodsFor: 'tests' stamp: 'cc 11/9/2022 18:05:47'!
 test06PortfolioKnowsItsTransactions
 	| portfolio account |
 	
@@ -84,7 +84,7 @@ test06PortfolioKnowsItsTransactions
 	self assert: (portfolio transactions) equals: (account transactions).
 	! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'cc 11/9/2022 18:05:47'!
+!PortfolioTest methodsFor: 'tests' stamp: 'cc 11/9/2022 18:05:47'!
 test07PortfolioTransactionsAreComposedtByBalanceOfTheAccountsIncluded
 	| portfolio account otherAccount|
 	
@@ -102,7 +102,7 @@ test07PortfolioTransactionsAreComposedtByBalanceOfTheAccountsIncluded
 	self assert: (portfolio transactions) equals: (account transactions, otherAccount transactions).
 	! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'cc 11/9/2022 18:05:47'!
+!PortfolioTest methodsFor: 'tests' stamp: 'cc 11/9/2022 18:05:47'!
 test08PortfolioBalanceIsComposedtByBalanceOfTheFinancialAssetsIncluded
 	| portfolio account accountOfPortfolioInterno portfolioInterno|
 	
@@ -121,7 +121,7 @@ test08PortfolioBalanceIsComposedtByBalanceOfTheFinancialAssetsIncluded
 	
 	self assert: (portfolio balance) equals: ((portfolioInterno balance)+(account balance)).! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'cc 11/9/2022 18:05:47'!
+!PortfolioTest methodsFor: 'tests' stamp: 'cc 11/9/2022 18:05:47'!
 test09PortfolioTransactionAreComposedtByTransactionOfTheFinancialAssetsIncluded
 	| portfolio account accountOfPortfolioInterno portfolioInterno|
 	
@@ -141,7 +141,7 @@ test09PortfolioTransactionAreComposedtByTransactionOfTheFinancialAssetsIncluded
 	self assert: (portfolio transactions) equals: (portfolioInterno transactions, account transactions).
 	! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'cc 11/11/2022 13:21:29'!
+!PortfolioTest methodsFor: 'tests' stamp: 'cc 11/11/2022 13:21:29'!
 test10PortfolioCanNotAddAnAccountTwice
 	| portfolio account |
 	
@@ -158,7 +158,7 @@ test10PortfolioCanNotAddAnAccountTwice
 	self assert: (portfolio transactions) equals: (account transactions).
 	! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'cc 11/11/2022 13:21:29'!
+!PortfolioTest methodsFor: 'tests' stamp: 'cc 11/11/2022 13:21:29'!
 test11PortfolioCanNotAddAnAccountAddedInAnInternalPortfolio
 	| portfolio account portfolioInterno|
 	
@@ -177,7 +177,7 @@ test11PortfolioCanNotAddAnAccountAddedInAnInternalPortfolio
 	self assert: (portfolio transactions) equals: (account transactions).
 	! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'cc 11/11/2022 13:21:29'!
+!PortfolioTest methodsFor: 'tests' stamp: 'cc 11/11/2022 13:21:29'!
 test12PortfolioCanNotAddAPortfolioThatHasASameAccount
 	| portfolio account portfolioInterno|
 	
@@ -195,7 +195,7 @@ test12PortfolioCanNotAddAPortfolioThatHasASameAccount
 	
 	! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'cc 11/11/2022 13:21:29'!
+!PortfolioTest methodsFor: 'tests' stamp: 'cc 11/11/2022 13:21:29'!
 test13PortfolioCanNotAddAnAccountRegisterInAnInternalPortfolio
 	| portfolio account portfolioInterno|
 	
@@ -213,7 +213,7 @@ test13PortfolioCanNotAddAnAccountRegisterInAnInternalPortfolio
 	
 	! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'cc 11/11/2022 14:15:07'!
+!PortfolioTest methodsFor: 'tests' stamp: 'cc 11/11/2022 14:15:07'!
 test14PortfolioCanNotBeAddInACloseCicle
 	| portfolio otroPortfolio portfolioInterno|
 	
@@ -329,7 +329,7 @@ TestCase subclass: #TransferencesTest
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Ejercicio'!
 
-!TransferencesTest methodsFor: 'as yet unclassified' stamp: 'cc 11/9/2022 17:57:00'!
+!TransferencesTest methodsFor: 'tests' stamp: 'cc 11/9/2022 17:57:00'!
 test01TransferMadesDiferentTransactionsInTheAccountsInvolved
 
 	|source receiver|
@@ -342,7 +342,7 @@ test01TransferMadesDiferentTransactionsInTheAccountsInvolved
 	self assert: (-100 * peso) equals: source balance.
 	self assert: (100 * peso) equals: receiver balance.! !
 
-!TransferencesTest methodsFor: 'as yet unclassified' stamp: 'cc 11/9/2022 17:57:08'!
+!TransferencesTest methodsFor: 'tests' stamp: 'cc 11/9/2022 17:57:08'!
 test02TransferValueCanNotBeNegative
 
 	|source receiver|
@@ -356,7 +356,7 @@ test02TransferValueCanNotBeNegative
 	self assert: (0 * peso) equals: source balance.
 	self assert: (0 * peso) equals: receiver balance.! !
 
-!TransferencesTest methodsFor: 'as yet unclassified' stamp: 'cc 11/9/2022 17:57:24'!
+!TransferencesTest methodsFor: 'tests' stamp: 'cc 11/9/2022 17:57:24'!
 test03TransferValueIsAPossitiveNumberAndEqualsToTheTrasnactionValue
 
 	|source receiver transferencia|
@@ -372,7 +372,7 @@ test03TransferValueIsAPossitiveNumberAndEqualsToTheTrasnactionValue
 	self assert: (transferencia value) equals: (100 * peso).
 	! !
 
-!TransferencesTest methodsFor: 'as yet unclassified' stamp: 'cc 11/9/2022 17:56:52'!
+!TransferencesTest methodsFor: 'tests' stamp: 'cc 11/9/2022 17:56:52'!
 test04TransferenceHasBeenProperlyReRegisteredOnTheAccoounts
 
 	|source receiver transferencia|
@@ -385,7 +385,7 @@ test04TransferenceHasBeenProperlyReRegisteredOnTheAccoounts
 	self assert: (receiver hasRegistered: (transferencia deposit)).	
 	self assert: (source hasRegistered: (transferencia withdraw)).	! !
 
-!TransferencesTest methodsFor: 'as yet unclassified' stamp: 'cc 11/9/2022 17:57:44'!
+!TransferencesTest methodsFor: 'tests' stamp: 'cc 11/9/2022 17:57:44'!
 test05TransferenceContrapartOfDepositIsOriginAccountTransaction
 
 	| source receiver transferencia contrapart |
@@ -400,7 +400,7 @@ test05TransferenceContrapartOfDepositIsOriginAccountTransaction
 	self assert:  (source transactions) equals: contrapart.	
 ! !
 
-!TransferencesTest methodsFor: 'as yet unclassified' stamp: 'cc 11/9/2022 17:58:07'!
+!TransferencesTest methodsFor: 'tests' stamp: 'cc 11/9/2022 17:58:07'!
 test06TransferenceContrapartOfWithdrawIsReceiverAccountTransaction
 
 	| source receiver transferencia contrapart |
