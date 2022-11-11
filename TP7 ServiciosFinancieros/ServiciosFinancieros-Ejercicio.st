@@ -141,6 +141,85 @@ test09PortfolioTransactionAreComposedtByTransactionOfTheFinancialAssetsIncluded
 	self assert: (portfolio transactions) equals: (portfolioInterno transactions, account transactions).
 	! !
 
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'cc 11/11/2022 13:04:35'!
+test10PortfolioCanNotAddAnAccountTwice
+	| portfolio account |
+	
+	portfolio := Portfolio new. 	
+	account := ReceptiveAccount  new.
+	Deposit register: 300 * peso on: account.
+	
+	portfolio addFinancialAsset: account. 
+	
+	self should: [portfolio addFinancialAsset: account] raise: Error.
+	
+	self assert: (portfolio transactions) equals: (account transactions).
+	! !
+
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'cc 11/11/2022 13:18:28'!
+test11PortfolioCanNotAddAnAccountAddedInAnInternalPortfolio
+	| portfolio account portfolioInterno|
+	
+	portfolio := Portfolio new.
+	portfolioInterno :=  	Portfolio new.
+	account := ReceptiveAccount  new.
+	Deposit register: 300 * peso on: account.
+	
+	portfolioInterno addFinancialAsset: account.
+	portfolio addFinancialAsset: portfolioInterno.
+	
+	self should: [portfolio addFinancialAsset: account] raise: Error.
+	
+	self assert: (portfolio transactions) equals: (account transactions).
+	! !
+
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'cc 11/11/2022 13:41:38'!
+test12PortfolioCanNotAddAPortfolioThatHasASameAccount
+	| portfolio account portfolioInterno|
+	
+	portfolio := Portfolio new.
+	portfolioInterno :=  	Portfolio new.
+	account := ReceptiveAccount  new.
+	Deposit register: 300 * peso on: account.
+	
+	portfolio addFinancialAsset: account. 
+	portfolioInterno addFinancialAsset: account.
+	
+	self should: [portfolio addFinancialAsset: portfolioInterno] raise: Error.
+	
+	! !
+
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'cc 11/11/2022 11:47:12'!
+test13PortfolioCanNotAddAnAccountRegisterInAnInternalPortfolio
+	| portfolio account portfolioInterno|
+	
+	portfolio := Portfolio new.
+	portfolioInterno :=  	Portfolio new.
+	account := ReceptiveAccount  new.
+	Deposit register: 300 * peso on: account.
+	
+	portfolio addFinancialAsset: account. 
+	portfolio addFinancialAsset: portfolioInterno.
+	
+	self should: [portfolioInterno addFinancialAsset: account] raise: Error.
+	
+	! !
+
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'cc 11/11/2022 12:16:59'!
+test14PortfolioCanAddAnAccountWhenHasFathersWithoutTheSameAccount
+	| portfolio account portfolioInterno |
+	
+	portfolio := Portfolio new.
+	portfolioInterno :=  	Portfolio new.
+	account := ReceptiveAccount  new.
+	Deposit register: 300 * peso on: account.
+	
+	portfolio addFinancialAsset: portfolioInterno.
+	portfolioInterno addFinancialAsset: account.
+	
+	
+	! !
+
 
 !classDefinition: #ReceptiveAccountTest category: 'ServiciosFinancieros-Ejercicio'!
 TestCase subclass: #ReceptiveAccountTest
@@ -372,12 +451,12 @@ initializeFor: aValue
 	value := aValue ! !
 
 
-!Deposit methodsFor: 'value' stamp: 'HernanWilkinson 7/13/2011 18:38'!
+!Deposit methodsFor: 'operations' stamp: 'HernanWilkinson 7/13/2011 18:38'!
 value
 
 	^ value! !
 
-!Deposit methodsFor: 'value' stamp: 'cc 11/9/2022 17:17:48'!
+!Deposit methodsFor: 'operations' stamp: 'cc 11/9/2022 17:17:48'!
 valueForBalance: account
 	^account balanceOfDeposit: value.! !
 
@@ -403,23 +482,24 @@ AccountTransaction subclass: #TransferDeposit
 addTransferSource: aTransfer
 	transfer := aTransfer ! !
 
-
-!TransferDeposit methodsFor: 'as yet unclassified' stamp: 'cc 11/9/2022 16:51:43'!
+!TransferDeposit methodsFor: 'private' stamp: 'cc 11/9/2022 16:51:43'!
 contrapart
 	^transfer withdraw! !
 
-!TransferDeposit methodsFor: 'as yet unclassified' stamp: 'cc 11/9/2022 16:25:30'!
-initializeFor: aValue
 
-	value := aValue ! !
-
-!TransferDeposit methodsFor: 'as yet unclassified' stamp: 'cc 11/9/2022 16:35:19'!
+!TransferDeposit methodsFor: 'operations' stamp: 'cc 11/9/2022 16:35:19'!
 value
 	^value! !
 
-!TransferDeposit methodsFor: 'as yet unclassified' stamp: 'cc 11/9/2022 17:19:55'!
+!TransferDeposit methodsFor: 'operations' stamp: 'cc 11/9/2022 17:19:55'!
 valueForBalance: account
 	^account balanceOfDeposit: value.! !
+
+
+!TransferDeposit methodsFor: 'initialization' stamp: 'cc 11/9/2022 16:25:30'!
+initializeFor: aValue
+
+	value := aValue ! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -448,24 +528,19 @@ contrapart
 	^transfer deposit! !
 
 
-!TransferWithdraw methodsFor: 'as yet unclassified' stamp: 'cc 11/9/2022 16:27:35'!
-initializeFor: aValue
-	value := aValue ! !
-
-!TransferWithdraw methodsFor: 'as yet unclassified' stamp: 'cc 11/9/2022 16:17:54'!
-initializeWith: aValue from: aTransfer
-	transfer := aTransfer.
-	value := aValue.
-	! !
-
-!TransferWithdraw methodsFor: 'as yet unclassified' stamp: 'cc 11/9/2022 16:35:27'!
+!TransferWithdraw methodsFor: 'operations' stamp: 'cc 11/9/2022 16:35:27'!
 value
 	^value! !
 
-!TransferWithdraw methodsFor: 'as yet unclassified' stamp: 'cc 11/9/2022 17:19:18'!
+!TransferWithdraw methodsFor: 'operations' stamp: 'cc 11/9/2022 17:19:18'!
 valueForBalance: account
 	^account balanceOfWithdraw: value.
 	! !
+
+
+!TransferWithdraw methodsFor: 'initialization' stamp: 'cc 11/9/2022 16:27:35'!
+initializeFor: aValue
+	value := aValue ! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -491,11 +566,11 @@ initializeFor: aValue
 	value := aValue ! !
 
 
-!Withdraw methodsFor: 'value' stamp: 'cc 11/9/2022 17:14:35'!
+!Withdraw methodsFor: 'operations' stamp: 'cc 11/9/2022 17:14:35'!
 value
 	^ value! !
 
-!Withdraw methodsFor: 'value' stamp: 'cc 11/9/2022 17:17:30'!
+!Withdraw methodsFor: 'operations' stamp: 'cc 11/9/2022 17:17:30'!
 valueForBalance: account
 	^account balanceOfWithdraw: value.! !
 
@@ -533,14 +608,21 @@ transactions
 
 !classDefinition: #Portfolio category: 'ServiciosFinancieros-Ejercicio'!
 FinancialAsset subclass: #Portfolio
-	instanceVariableNames: 'accounts'
+	instanceVariableNames: 'accounts fathers'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Ejercicio'!
 
-!Portfolio methodsFor: 'main protocol' stamp: 'cc 11/9/2022 18:05:47'!
+!Portfolio methodsFor: 'main protocol' stamp: 'cc 11/11/2022 12:40:25'!
 addFinancialAsset: aReceptiveAccount 
-	accounts add: aReceptiveAccount.! !
+	(aReceptiveAccount isRegister: self) ifTrue: [self error: self class CanNotAddAnAccountTwice].
+	(fathers isEmpty) ifFalse: [
+		fathers do: [:aFather | (aReceptiveAccount isRegister: aFather) ifTrue: 
+			[self error: self class CanNotAddAnAccountTwice].
+			].
+		].
+	accounts add: aReceptiveAccount.
+	aReceptiveAccount addAsFatherIfApply: self.! !
 
 !Portfolio methodsFor: 'main protocol' stamp: 'cc 11/8/2022 20:37:14'!
 balance
@@ -550,6 +632,14 @@ balance
 hasRegistered: aTransaction 
 	^accounts anySatisfy: [:anAccount | anAccount hasRegistered: aTransaction]. ! !
 
+!Portfolio methodsFor: 'main protocol' stamp: 'cc 11/11/2022 13:40:27'!
+is: anAccount
+	^((self members) anySatisfy: [:aFinancialAsset  | aFinancialAsset is: anAccount]) or: [self = anAccount]! !
+
+!Portfolio methodsFor: 'main protocol' stamp: 'cc 11/11/2022 11:00:01'!
+isRegister: aPortfolio
+	^(aPortfolio members) anySatisfy: [:aFinancialAsset  | (self members) anySatisfy: [:selfMember |  aFinancialAsset = selfMember]]! !
+
 !Portfolio methodsFor: 'main protocol' stamp: 'cc 11/8/2022 21:22:04'!
 transactions
 	| transactions |
@@ -558,9 +648,29 @@ transactions
 	^transactions ! !
 
 
-!Portfolio methodsFor: 'initialization' stamp: 'cc 11/8/2022 20:34:10'!
+!Portfolio methodsFor: 'initialization' stamp: 'cc 11/11/2022 11:49:51'!
 initialize
-	accounts := OrderedCollection new.! !
+	accounts := OrderedCollection new.
+	fathers := OrderedCollection new.! !
+
+
+!Portfolio methodsFor: 'privated' stamp: 'cc 11/11/2022 12:27:27'!
+addAsFatherIfApply: Portfoliofathers
+	fathers add: Portfoliofathers.! !
+
+!Portfolio methodsFor: 'privated' stamp: 'cc 11/11/2022 12:39:56'!
+members 
+	^accounts! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'Portfolio class' category: 'ServiciosFinancieros-Ejercicio'!
+Portfolio class
+	instanceVariableNames: ''!
+
+!Portfolio class methodsFor: 'as yet unclassified' stamp: 'cc 11/11/2022 13:05:43'!
+CanNotAddAnAccountTwice
+	'No se puede agregar dos veces el mismo activo financiero'! !
 
 
 !classDefinition: #ReceptiveAccount category: 'ServiciosFinancieros-Ejercicio'!
@@ -574,6 +684,16 @@ FinancialAsset subclass: #ReceptiveAccount
 initialize
 
 	transactions := OrderedCollection new.! !
+
+
+!ReceptiveAccount methodsFor: 'privated' stamp: 'cc 11/11/2022 11:51:36'!
+addAsFatherIfApply: Portfoliofathers
+	^self! !
+
+!ReceptiveAccount methodsFor: 'privated' stamp: 'cc 11/11/2022 13:15:35'!
+members 
+	^ self
+! !
 
 
 !ReceptiveAccount methodsFor: 'main protocol' stamp: 'cc 11/9/2022 17:18:37'!
@@ -593,6 +713,16 @@ hasRegistered: aTransaction
 	^ transactions includes: aTransaction 
 ! !
 
+!ReceptiveAccount methodsFor: 'main protocol' stamp: 'cc 11/11/2022 13:35:36'!
+is: aFinancialAsset
+	^ self = aFinancialAsset
+! !
+
+!ReceptiveAccount methodsFor: 'main protocol' stamp: 'cc 11/11/2022 13:35:01'!
+isRegister: aPortfolio
+	^(aPortfolio members) anySatisfy: [:aFinancialAsset  | aFinancialAsset is: self] 
+! !
+
 !ReceptiveAccount methodsFor: 'main protocol' stamp: 'cc 11/9/2022 16:37:18'!
 register: aTransaction
 	transactions add: aTransaction 
@@ -610,36 +740,37 @@ Object subclass: #Transfer
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Ejercicio'!
 
-!Transfer methodsFor: 'as yet unclassified' stamp: 'cc 11/6/2022 20:04:18'!
+!Transfer methodsFor: 'main protocol' stamp: 'cc 11/6/2022 20:04:18'!
 deposit
 	^deposit
 	! !
 
-!Transfer methodsFor: 'as yet unclassified' stamp: 'cc 11/9/2022 16:51:20'!
+!Transfer methodsFor: 'main protocol' stamp: 'cc 11/9/2022 16:51:20'!
 depositContrapart
 	^deposit contrapart
 	! !
 
-!Transfer methodsFor: 'as yet unclassified' stamp: 'cc 11/6/2022 20:42:42'!
-initializeFor: aValue withdraw: aWithdraw deposit: aDeposit
-	value := aValue.
-	deposit := aDeposit.
-	withdraw := aWithdraw.! !
-
-!Transfer methodsFor: 'as yet unclassified' stamp: 'cc 11/6/2022 19:50:37'!
+!Transfer methodsFor: 'main protocol' stamp: 'cc 11/6/2022 19:50:37'!
 value
 	^value
 	! !
 
-!Transfer methodsFor: 'as yet unclassified' stamp: 'cc 11/6/2022 20:05:06'!
+!Transfer methodsFor: 'main protocol' stamp: 'cc 11/6/2022 20:05:06'!
 withdraw
 	^withdraw
 	! !
 
-!Transfer methodsFor: 'as yet unclassified' stamp: 'cc 11/9/2022 16:55:30'!
+!Transfer methodsFor: 'main protocol' stamp: 'cc 11/9/2022 16:55:30'!
 withdrawContrapart
 	^withdraw contrapart
 	! !
+
+
+!Transfer methodsFor: 'initialization' stamp: 'cc 11/6/2022 20:42:42'!
+initializeFor: aValue withdraw: aWithdraw deposit: aDeposit
+	value := aValue.
+	deposit := aDeposit.
+	withdraw := aWithdraw.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
