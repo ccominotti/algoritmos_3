@@ -311,49 +311,60 @@ TestCase subclass: #ReportTest
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Solucion'!
 
-!ReportTest methodsFor: 'tests' stamp: 'cc 11/11/2022 20:17:48'!
+!ReportTest methodsFor: 'tests' stamp: 'cc 11/15/2022 20:35:36'!
 test01
-	| account |
+	| account accountSummary |
 	account := ReceptiveAccount new.
-	
-	self assert: account accountSummary equals: 'balance', account balance asString.! !
+	accountSummary := AccountSummary for: account.
+	self assert: accountSummary accountSummaryReport equals: 'balance', account balance asString.! !
 
-!ReportTest methodsFor: 'tests' stamp: 'cc 11/14/2022 08:28:17'!
+!ReportTest methodsFor: 'tests' stamp: 'cc 11/15/2022 20:39:39'!
 test02
-	| account deposit|
+	| account deposit accountSummary |
 	account := ReceptiveAccount new.
 	deposit := Deposit register: 100 * peso on: account.
-	
-	self assert: account accountSummary equals: 'Depósito por ', deposit value asString, 'balance', account balance asString.! !
+	accountSummary := AccountSummary for: account.
+	self assert: accountSummary accountSummaryReport equals: ('Depósito por ', deposit value asString, 'balance', account balance asString).! !
 
-!ReportTest methodsFor: 'tests' stamp: 'cc 11/11/2022 20:22:50'!
+!ReportTest methodsFor: 'tests' stamp: 'cc 11/15/2022 20:41:09'!
 test03
-	| account deposit|
+	| account withdraw accountSummary |
 	account := ReceptiveAccount new.
-	deposit := Withdraw register: 100 * peso on: account.
-	
-	self assert: account accountSummary equals: 'Extracción por ', deposit value asString, 'balance', account balance asString.! !
+	withdraw := Withdraw register: 100 * peso on: account.
+	accountSummary := AccountSummary for: account.
+	self assert: accountSummary accountSummaryReport equals: 'Extracción por ', withdraw value asString, 'balance', account balance asString.! !
 
-!ReportTest methodsFor: 'tests' stamp: 'cc 11/14/2022 08:33:48'!
+!ReportTest methodsFor: 'tests' stamp: 'cc 11/15/2022 20:44:01'!
 test04
-	| destinationAccount originAccount transfer |
+	| destinationAccount originAccount transfer accountSummaryOfDestination accountSummaryOfOrigin |
 	destinationAccount := ReceptiveAccount new.
 	originAccount := ReceptiveAccount new.
-	
+	accountSummaryOfDestination := AccountSummary for: destinationAccount.
+	accountSummaryOfOrigin := AccountSummary for: originAccount.
 	transfer := Transfer amount: 10 * peso from: originAccount to: destinationAccount.
 	
-	self assert: destinationAccount accountSummary equals: 'Entrada por transferencia de ', transfer value asString, 'balance', destinationAccount balance asString.
-	self assert: originAccount accountSummary equals: 'Salida por transferencia de ', transfer value asString , 'balance', originAccount balance asString.! !
+	self assert: accountSummaryOfDestination accountSummaryReport equals: 'Entrada por transferencia de ', transfer value asString, 'balance', destinationAccount balance asString.
+	self assert: accountSummaryOfOrigin accountSummaryReport equals: 'Salida por transferencia de ', transfer value asString , 'balance', originAccount balance asString.! !
 
-!ReportTest methodsFor: 'tests' stamp: 'cc 11/14/2022 08:28:36'!
+!ReportTest methodsFor: 'tests' stamp: 'cc 11/15/2022 20:44:45'!
 test05
+	| account withdraw deposit accountSummary|
+	account := ReceptiveAccount new.
+	withdraw := Withdraw register: 100 * peso on: account.
+	deposit := Deposit register: 100 * peso on: account.
+	accountSummary := AccountSummary for: account.
+	
+	self assert: 'Extracción por ', withdraw value asString,'Depósito por ', deposit value asString, 'balance', account balance asString equals: accountSummary accountSummaryReport .! !
+
+!ReportTest methodsFor: 'tests' stamp: 'cc 11/14/2022 13:11:29'!
+test06
 	| portfolio |
 	portfolio := Portfolio new.
 	
 	self assert: portfolio accountSummary equals: 'balance', portfolio balance asString.! !
 
-!ReportTest methodsFor: 'tests' stamp: 'cc 11/14/2022 08:30:44'!
-test06
+!ReportTest methodsFor: 'tests' stamp: 'cc 11/14/2022 13:11:18'!
+test07
 	| account deposit portfolio|
 	portfolio := Portfolio new.
 	account := ReceptiveAccount new.
@@ -362,8 +373,8 @@ test06
 	
 	self assert: portfolio accountSummary equals: 'Depósito por ', deposit value asString, 'balance', account balance asString.! !
 
-!ReportTest methodsFor: 'tests' stamp: 'cc 11/14/2022 08:31:11'!
-test07
+!ReportTest methodsFor: 'tests' stamp: 'cc 11/14/2022 13:11:12'!
+test08
 	| account deposit portfolio|
 	portfolio := Portfolio new.
 	account := ReceptiveAccount new.
@@ -372,8 +383,8 @@ test07
 	
 	self assert: portfolio accountSummary equals: 'Extracción por ', deposit value asString, 'balance', account balance asString.! !
 
-!ReportTest methodsFor: 'tests' stamp: 'cc 11/14/2022 09:36:41'!
-test08
+!ReportTest methodsFor: 'tests' stamp: 'cc 11/14/2022 13:11:05'!
+test09
 	| destinationAccount originAccount transfer portfolioWithDestinationAccount portfolioWithOriginAccount|
 	
 	portfolioWithDestinationAccount := Portfolio new.
@@ -389,8 +400,8 @@ test08
 	self assert: portfolioWithDestinationAccount accountSummary equals: 'Entrada por transferencia de ', transfer value asString, 'balance', destinationAccount balance asString.
 	self assert: portfolioWithOriginAccount accountSummary equals: 'Salida por transferencia de ', transfer value asString , 'balance', originAccount balance asString.! !
 
-!ReportTest methodsFor: 'tests' stamp: 'cc 11/14/2022 09:37:47'!
-test09
+!ReportTest methodsFor: 'tests' stamp: 'cc 11/14/2022 13:11:02'!
+test10
 	| destinationAccount originAccount |
 	destinationAccount := ReceptiveAccount new.
 	originAccount := ReceptiveAccount new.
@@ -398,8 +409,8 @@ test09
 	self assert: destinationAccount transferNet equals: destinationAccount balance.
 	self assert: originAccount transferNet equals: originAccount balance.! !
 
-!ReportTest methodsFor: 'tests' stamp: 'cc 11/14/2022 09:40:56'!
-test10
+!ReportTest methodsFor: 'tests' stamp: 'cc 11/14/2022 13:10:57'!
+test11
 	| destinationAccount originAccount |
 	destinationAccount := ReceptiveAccount new.
 	originAccount := ReceptiveAccount new.
@@ -409,8 +420,8 @@ test10
 	self assert: destinationAccount transferNet equals: destinationAccount balance.
 	self assert: originAccount transferNet equals: originAccount balance.! !
 
-!ReportTest methodsFor: 'tests' stamp: 'cc 11/14/2022 10:09:38'!
-test11
+!ReportTest methodsFor: 'tests' stamp: 'cc 11/14/2022 13:10:52'!
+test12
 	| destinationAccount originAccount |
 	destinationAccount := ReceptiveAccount new.
 	originAccount := ReceptiveAccount new.
@@ -420,8 +431,8 @@ test11
 	self assert: originAccount transferNet equals: originAccount balance.
 	self assert: destinationAccount transferNet equals: 10 * peso.! !
 
-!ReportTest methodsFor: 'tests' stamp: 'cc 11/14/2022 09:52:21'!
-test12
+!ReportTest methodsFor: 'tests' stamp: 'cc 11/14/2022 13:10:43'!
+test13
 	| destinationAccount originAccount portfolioWithOriginTransfer portfolioWithDestinationTransfer |
 	
 	destinationAccount := ReceptiveAccount new.
@@ -767,12 +778,12 @@ Object subclass: #FinancialAsset
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Solucion'!
 
-!FinancialAsset methodsFor: 'main protocol' stamp: 'cc 11/14/2022 10:21:10'!
+!FinancialAsset methodsFor: 'main protocol' stamp: 'cc 11/15/2022 18:54:08'!
 accountSummary
 	| partOfString |
 	partOfString := ''.
-	(self transactions) do: [:transaction | partOfString := transaction accountSummaryText].
-	^partOfString, ('balance', self balance asString).! !
+	(self transactions) do: [:transaction | partOfString := partOfString, transaction accountSummaryText].
+	^partOfString, ('balance', self balance asString)! !
 
 !FinancialAsset methodsFor: 'main protocol' stamp: 'HAW 5/25/2019 12:23:40'!
 balance
@@ -1014,6 +1025,51 @@ addedTo: aPortfolio
 isComposedBy: anAccount
 
 	^self = anAccount ! !
+
+
+!classDefinition: #Report category: 'ServiciosFinancieros-Solucion'!
+Object subclass: #Report
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'ServiciosFinancieros-Solucion'!
+
+
+!classDefinition: #AccountSummary category: 'ServiciosFinancieros-Solucion'!
+Report subclass: #AccountSummary
+	instanceVariableNames: 'account'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'ServiciosFinancieros-Solucion'!
+
+!AccountSummary methodsFor: 'as yet unclassified' stamp: 'cc 11/15/2022 20:33:30'!
+accountSummaryReport
+	| partOfString |
+	partOfString := ''.
+	(account transactions) do: [:transaction | partOfString := partOfString, transaction accountSummaryText].
+	^partOfString, ('balance', account balance asString)! !
+
+!AccountSummary methodsFor: 'as yet unclassified' stamp: 'cc 11/15/2022 20:32:30'!
+with: anAccount
+	account := anAccount ! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'AccountSummary class' category: 'ServiciosFinancieros-Solucion'!
+AccountSummary class
+	instanceVariableNames: ''!
+
+!AccountSummary class methodsFor: 'as yet unclassified' stamp: 'cc 11/15/2022 20:32:05'!
+for: anAccount
+	^self new with: anAccount! !
+
+
+!classDefinition: #TransferNet category: 'ServiciosFinancieros-Solucion'!
+Report subclass: #TransferNet
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'ServiciosFinancieros-Solucion'!
 
 
 !classDefinition: #Transfer category: 'ServiciosFinancieros-Solucion'!
