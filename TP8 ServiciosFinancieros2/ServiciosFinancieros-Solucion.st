@@ -370,7 +370,25 @@ test13
 ! !
 
 
-!ReportTest methodsFor: 'tests Tree Printer' stamp: 'cc 11/17/2022 20:06:13'!
+!ReportTest methodsFor: 'tests Detailed Tree Printer' stamp: 'gmor 11/17/2022 21:01:37'!
+test17
+	| account portfolio portfolioTreePrinter stringTree |
+	
+	account := ReceptiveAccount named: 'Cuenta'.
+	Deposit register: 100 * peso on: account.
+	portfolio := Portfolio named: 'Portfolio' with: account.
+	portfolioTreePrinter := PortfolioDetailedTreePrinter for: portfolio.
+	stringTree := 
+'Portfolio
+-Cuenta
+--Depósito por 100 * pesos
+--Balance = 100 * pesos
+-Balance = 100 * pesos', String newLineString.
+		
+	self assert: portfolioTreePrinter portfolioTreePrinter equals: stringTree.! !
+
+
+!ReportTest methodsFor: 'tests Tree Printer' stamp: 'gmor 11/17/2022 21:01:20'!
 test14
 	| portfolio portfolioTreePrinter|
 	
@@ -378,7 +396,7 @@ test14
 	portfolioTreePrinter := PortfolioTreePrinter for: portfolio.
 	self assert:  portfolioTreePrinter portfolioTreePrinter equals: 'Portfolio', String newLineString.! !
 
-!ReportTest methodsFor: 'tests Tree Printer' stamp: 'cc 11/17/2022 20:21:04'!
+!ReportTest methodsFor: 'tests Tree Printer' stamp: 'gmor 11/17/2022 21:01:12'!
 test15
 	| account portfolio portfolioTreePrinter stringTree |
 	
@@ -390,7 +408,7 @@ test15
 		
 	self assert: portfolioTreePrinter portfolioTreePrinter equals: stringTree. ! !
 
-!ReportTest methodsFor: 'tests Tree Printer' stamp: 'cc 11/17/2022 20:20:58'!
+!ReportTest methodsFor: 'tests Tree Printer' stamp: 'gmor 11/17/2022 21:01:02'!
 test16
 	| accountA accountB accountC portfolio portfolioPadre portfolioHijo portfolioTreePrinter stringTree |
 	
@@ -407,22 +425,6 @@ test16
 --CuentaB
 -PortfolioHijoB
 --CuentaC', String newLineString.
-		
-	self assert: portfolioTreePrinter portfolioTreePrinter equals: stringTree. ! !
-
-!ReportTest methodsFor: 'tests Tree Printer' stamp: 'cc 11/17/2022 20:42:28'!
-test17
-	| account portfolio portfolioTreePrinter stringTree |
-	
-	account := ReceptiveAccount named: 'Cuenta'.
-	Deposit register: 100 * peso on: account.
-	portfolio := Portfolio named: 'Portfolio' with: account.
-	portfolioTreePrinter := PortfolioDetailedTreePrinter for: portfolio.
-	stringTree := 'Portfolio
--Cuenta
---Depósito por 100*peso
---Balance = 100*peso
--Balance = 100*peso', String newLineString.
 		
 	self assert: portfolioTreePrinter portfolioTreePrinter equals: stringTree. ! !
 
@@ -1160,11 +1162,29 @@ Object subclass: #PortfolioTreeReport
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Solucion'!
 
-!PortfolioTreeReport methodsFor: 'as yet unclassified' stamp: 'cc 11/17/2022 20:33:02'!
+!PortfolioTreeReport methodsFor: 'initialization' stamp: 'gmor 11/17/2022 21:37:56'!
+with: aPortfolio
+	portfolio := aPortfolio.! !
+
+
+!PortfolioTreeReport methodsFor: 'private' stamp: 'gmor 11/17/2022 21:22:00'!
+appendToReportText: moreText
+	treeString := treeString, indentationLevel, moreText, String newLineString.! !
+
+!PortfolioTreeReport methodsFor: 'private' stamp: 'gmor 11/17/2022 21:14:17'!
+indentationAdd
+	indentationLevel := indentationLevel, '-'! !
+
+!PortfolioTreeReport methodsFor: 'private' stamp: 'gmor 11/17/2022 21:16:57'!
+indentationRemove
+	indentationLevel := indentationLevel copyFrom:1 to: (indentationLevel size - 1).! !
+
+
+!PortfolioTreeReport methodsFor: 'dd' stamp: 'cc 11/17/2022 20:33:02'!
 affectedByPortfolio: aPortfolio
 	self subclassResponsibility ! !
 
-!PortfolioTreeReport methodsFor: 'as yet unclassified' stamp: 'cc 11/17/2022 20:32:42'!
+!PortfolioTreeReport methodsFor: 'dd' stamp: 'cc 11/17/2022 20:32:42'!
 affectedByReceptiveAccount: aReceptiveAccount.
 	self subclassResponsibility ! !
 
@@ -1176,47 +1196,49 @@ PortfolioTreeReport subclass: #PortfolioDetailedTreePrinter
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Solucion'!
 
-!PortfolioDetailedTreePrinter methodsFor: 'as yet unclassified' stamp: 'cc 11/17/2022 20:30:52'!
+!PortfolioDetailedTreePrinter methodsFor: 'dd - transactions' stamp: 'gmor 11/17/2022 21:35:29'!
 affectedByDeposit: aDeposit
-	treeString := treeString, indentationLevel ,'-Depósito por ', aDeposit value asString, String newLineString.! !
+	self appendToReportText: 'Depósito por ', aDeposit value asString
+	! !
 
-!PortfolioDetailedTreePrinter methodsFor: 'as yet unclassified' stamp: 'cc 11/17/2022 20:43:55'!
-affectedByPortfolio: aPortfolio
-	treeString := treeString, indentationLevel, aPortfolio name, String newLineString.
-	indentationLevel := indentationLevel, '-'.
-	aPortfolio iterateAccountsWith: [:anAccount | anAccount aplicateToReport: self].
-	treeString := treeString, indentationLevel, 'Balance = ', aPortfolio balance asString, String newLineString.
-	indentationLevel := indentationLevel copyFrom:1 to: (indentationLevel size - 1).! !
-
-!PortfolioDetailedTreePrinter methodsFor: 'as yet unclassified' stamp: 'cc 11/17/2022 20:47:28'!
-affectedByReceptiveAccount: aReceptiveAccount
-	treeString := treeString, indentationLevel, aReceptiveAccount name, String newLineString.
-	aReceptiveAccount iterateTransactionsWith: [:transaction | transaction aplicateToReport: self].
-	treeString := treeString, indentationLevel, '-Balance = ', aReceptiveAccount balance asString, String newLineString.
-! !
-
-!PortfolioDetailedTreePrinter methodsFor: 'as yet unclassified' stamp: 'cc 11/17/2022 20:31:30'!
+!PortfolioDetailedTreePrinter methodsFor: 'dd - transactions' stamp: 'gmor 11/17/2022 21:35:34'!
 affectedByTransferDepositLeg: aTranferDepositLeg
-	treeString := treeString, indentationLevel ,'-Entrada por transferencia de ', aTranferDepositLeg value asString, String newLineString.! !
+	self appendToReportText: 'Entrada por transferencia de ', aTranferDepositLeg value asString.! !
 
-!PortfolioDetailedTreePrinter methodsFor: 'as yet unclassified' stamp: 'cc 11/17/2022 20:32:12'!
+!PortfolioDetailedTreePrinter methodsFor: 'dd - transactions' stamp: 'gmor 11/17/2022 21:35:41'!
 affectedByTransferWithdrawLeg: aTranferWithdrawLeg
-	treeString := treeString, indentationLevel ,'-Salida por transferencia de ', aTranferWithdrawLeg value asString, String newLineString.! !
+	self appendToReportText: 'Salida por transferencia de ', aTranferWithdrawLeg value asString.! !
 
-!PortfolioDetailedTreePrinter methodsFor: 'as yet unclassified' stamp: 'cc 11/17/2022 20:30:56'!
+!PortfolioDetailedTreePrinter methodsFor: 'dd - transactions' stamp: 'gmor 11/17/2022 21:35:45'!
 affectedByWithdraw: aDeposit
-	treeString := treeString,  indentationLevel ,'-Extracción por ', aDeposit value asString, String newLineString.! !
+	self appendToReportText: 'Extracción por ', aDeposit value asString.! !
 
-!PortfolioDetailedTreePrinter methodsFor: 'as yet unclassified' stamp: 'cc 11/17/2022 20:24:50'!
+
+!PortfolioDetailedTreePrinter methodsFor: 'dd' stamp: 'gmor 11/17/2022 21:31:39'!
+affectedByPortfolio: aPortfolio
+
+	self appendToReportText: aPortfolio name.
+	self indentationAdd.
+	aPortfolio iterateAccountsWith: [:anAccount | anAccount aplicateToReport: self].
+	self appendToReportText: 'Balance = ', aPortfolio balance asString.
+	self indentationRemove.! !
+
+!PortfolioDetailedTreePrinter methodsFor: 'dd' stamp: 'gmor 11/17/2022 21:37:01'!
+affectedByReceptiveAccount: aReceptiveAccount
+
+	self appendToReportText: aReceptiveAccount name.
+	self indentationAdd.
+	aReceptiveAccount iterateTransactionsWith: [:transaction | transaction aplicateToReport: self].
+	self appendToReportText: 'Balance = ', aReceptiveAccount balance asString.
+	self indentationRemove.! !
+
+
+!PortfolioDetailedTreePrinter methodsFor: 'main protocol' stamp: 'gmor 11/17/2022 21:05:23'!
 portfolioTreePrinter
-	portfolio aplicateToReport: self.
-	^treeString ! !
-
-!PortfolioDetailedTreePrinter methodsFor: 'as yet unclassified' stamp: 'cc 11/17/2022 20:24:50'!
-with: anAccount
-	portfolio := anAccount.
 	treeString := ''.
-	indentationLevel := ''.! !
+	indentationLevel := ''.
+	portfolio aplicateToReport: self.
+	^treeString! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -1236,27 +1258,25 @@ PortfolioTreeReport subclass: #PortfolioTreePrinter
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Solucion'!
 
-!PortfolioTreePrinter methodsFor: 'as yet unclassified' stamp: 'cc 11/17/2022 20:11:32'!
-affectedByPortfolio: aPortfolio
-	treeString := treeString, indentationLevel, aPortfolio name, String newLineString.
-	indentationLevel := indentationLevel, '-'.
-	aPortfolio iterateAccountsWith: [:anAccount | anAccount aplicateToReport: self].
-	indentationLevel := indentationLevel copyFrom:1 to: (indentationLevel size - 1).! !
-
-!PortfolioTreePrinter methodsFor: 'as yet unclassified' stamp: 'cc 11/17/2022 20:05:35'!
-affectedByReceptiveAccount: aReceptiveAccount.
-	treeString := treeString, indentationLevel, aReceptiveAccount name, String newLineString.! !
-
-!PortfolioTreePrinter methodsFor: 'as yet unclassified' stamp: 'cc 11/17/2022 20:23:24'!
+!PortfolioTreePrinter methodsFor: 'main protocol' stamp: 'gmor 11/17/2022 21:04:13'!
 portfolioTreePrinter
+	treeString := ''.
+	indentationLevel := ''.
+	
 	portfolio aplicateToReport: self.
 	^treeString ! !
 
-!PortfolioTreePrinter methodsFor: 'as yet unclassified' stamp: 'cc 11/17/2022 20:23:24'!
-with: anAccount
-	portfolio := anAccount.
-	treeString := ''.
-	indentationLevel := ''.! !
+
+!PortfolioTreePrinter methodsFor: 'dd' stamp: 'gmor 11/17/2022 21:24:42'!
+affectedByPortfolio: aPortfolio
+	self appendToReportText: aPortfolio name.
+	self indentationAdd.
+	aPortfolio iterateAccountsWith: [:anAccount | anAccount aplicateToReport: self].
+	self indentationRemove.! !
+
+!PortfolioTreePrinter methodsFor: 'dd' stamp: 'gmor 11/17/2022 21:39:54'!
+affectedByReceptiveAccount: aReceptiveAccount.
+	self appendToReportText: aReceptiveAccount name! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -1276,22 +1296,27 @@ Object subclass: #Report
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Solucion'!
 
-!Report methodsFor: 'dd - main protocol' stamp: 'cc 11/17/2022 17:44:35'!
+!Report methodsFor: 'initialization' stamp: 'gmor 11/17/2022 21:43:44'!
+with: anAccount
+	account := anAccount.! !
+
+
+!Report methodsFor: 'dd' stamp: 'cc 11/17/2022 17:44:35'!
 affectedByDeposit: aDeposit
 	self subclassResponsibility 
 ! !
 
-!Report methodsFor: 'dd - main protocol' stamp: 'cc 11/17/2022 17:45:17'!
+!Report methodsFor: 'dd' stamp: 'cc 11/17/2022 17:45:17'!
 affectedByTransferDepositLeg: aTrasnferDepositLeg
 	self subclassResponsibility 
 ! !
 
-!Report methodsFor: 'dd - main protocol' stamp: 'cc 11/17/2022 17:45:03'!
+!Report methodsFor: 'dd' stamp: 'cc 11/17/2022 17:45:03'!
 affectedByTransferWithdrawLeg: aTransferWithdrawLeg
 	self subclassResponsibility 
 ! !
 
-!Report methodsFor: 'dd - main protocol' stamp: 'cc 11/17/2022 17:44:50'!
+!Report methodsFor: 'dd' stamp: 'cc 11/17/2022 17:44:50'!
 affectedByWithdraw: aWithdraw
 	self subclassResponsibility 
 ! !
@@ -1304,34 +1329,34 @@ Report subclass: #AccountSummary
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Solucion'!
 
-!AccountSummary methodsFor: 'initialization' stamp: 'cc 11/17/2022 18:06:13'!
-with: anAccount
-	account := anAccount.
-	summary := ''.! !
-
-
-!AccountSummary methodsFor: 'dd - main protocol' stamp: 'cc 11/17/2022 18:07:16'!
+!AccountSummary methodsFor: 'main protocol' stamp: 'gmor 11/17/2022 21:03:14'!
 accountSummaryReport
+	summary := ''.
 	account iterateTransactionsWith: [:transaction | transaction aplicateToReport: self].
 	summary := summary, 'balance', account balance asString.
 	^summary.
 	! !
 
-!AccountSummary methodsFor: 'dd - main protocol' stamp: 'cc 11/17/2022 18:04:15'!
+
+!AccountSummary methodsFor: 'dd' stamp: 'gmor 11/17/2022 21:29:57'!
 affectedByDeposit: aDeposit
-	summary := summary, 'Depósito por ', aDeposit value asString! !
+	self summaryAdd: 'Depósito por ', aDeposit value asString! !
 
-!AccountSummary methodsFor: 'dd - main protocol' stamp: 'cc 11/17/2022 18:04:08'!
+!AccountSummary methodsFor: 'dd' stamp: 'gmor 11/17/2022 21:29:48'!
 affectedByTransferDepositLeg: aTranferDepositLeg
-	summary := summary, 'Entrada por transferencia de ', aTranferDepositLeg value asString! !
+	self summaryAdd: 'Entrada por transferencia de ', aTranferDepositLeg value asString! !
 
-!AccountSummary methodsFor: 'dd - main protocol' stamp: 'cc 11/17/2022 18:04:21'!
+!AccountSummary methodsFor: 'dd' stamp: 'gmor 11/17/2022 21:29:40'!
 affectedByTransferWithdrawLeg: aTranferWithdrawLeg
-	summary := summary, 'Salida por transferencia de ', aTranferWithdrawLeg value asString! !
+	self summaryAdd: 'Salida por transferencia de ', aTranferWithdrawLeg value asString! !
 
-!AccountSummary methodsFor: 'dd - main protocol' stamp: 'cc 11/17/2022 18:04:26'!
+!AccountSummary methodsFor: 'dd' stamp: 'gmor 11/17/2022 21:29:23'!
 affectedByWithdraw: aDeposit
-	summary := summary, 'Extracción por ', aDeposit value asString! !
+	self summaryAdd: 'Extracción por ', aDeposit value asString! !
+
+!AccountSummary methodsFor: 'dd' stamp: 'gmor 11/17/2022 21:29:09'!
+summaryAdd: moreText
+	summary := summary, moreText! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -1351,34 +1376,27 @@ Report subclass: #TransferNet
 	poolDictionaries: ''
 	category: 'ServiciosFinancieros-Solucion'!
 
-!TransferNet methodsFor: 'dd - main protocol' stamp: 'cc 11/17/2022 17:37:42'!
+!TransferNet methodsFor: 'main protocol' stamp: 'gmor 11/17/2022 21:02:38'!
+transferNetTotalBalance	balance := 0.
+	account iterateTransactionsWith: [:transaction | transaction aplicateToReport: self].
+	^balance! !
+
+
+!TransferNet methodsFor: 'dd' stamp: 'cc 11/17/2022 17:37:42'!
 affectedByDeposit: aDeposit
 ! !
 
-!TransferNet methodsFor: 'dd - main protocol' stamp: 'cc 11/17/2022 17:37:19'!
+!TransferNet methodsFor: 'dd' stamp: 'cc 11/17/2022 17:37:19'!
 affectedByTransferDepositLeg: aTransferDepositLeg
 	balance := balance + aTransferDepositLeg value.! !
 
-!TransferNet methodsFor: 'dd - main protocol' stamp: 'cc 11/17/2022 17:37:24'!
+!TransferNet methodsFor: 'dd' stamp: 'cc 11/17/2022 17:37:24'!
 affectedByTransferWithdrawLeg: aTranferWithdrawLeg
 	balance := balance - aTranferWithdrawLeg value.! !
 
-!TransferNet methodsFor: 'dd - main protocol' stamp: 'cc 11/17/2022 17:37:36'!
+!TransferNet methodsFor: 'dd' stamp: 'cc 11/17/2022 17:37:36'!
 affectedByWithdraw: aWithdraw
 ! !
-
-!TransferNet methodsFor: 'dd - main protocol' stamp: 'cc 11/17/2022 17:39:24'!
-transferNetTotalBalance
-	account iterateTransactionsWith: [:transaction | transaction aplicateToReport: self].
-	^balance
-
-! !
-
-
-!TransferNet methodsFor: 'initialization' stamp: 'cc 11/17/2022 17:39:36'!
-with: anAccount
-	account := anAccount.
-	balance := 0.! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
