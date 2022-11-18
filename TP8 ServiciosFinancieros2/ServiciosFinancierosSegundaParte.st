@@ -1007,11 +1007,6 @@ transactions
 
 	self subclassResponsibility ! !
 
-!FinancialAsset methodsFor: 'main protocol' stamp: 'cc 11/14/2022 10:10:06'!
-transferNet
-	self subclassResponsibility.
- ! !
-
 
 !FinancialAsset methodsFor: 'composition' stamp: 'LL 7/8/2021 21:45:50'!
 addedTo: aPortfolio
